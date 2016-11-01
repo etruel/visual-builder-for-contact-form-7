@@ -72,6 +72,7 @@ function wpecf7vb_admin_head_scripts() {
 		var $_wpcf7_taggen_insert = _wpcf7.taggen.insert;
 		_wpcf7.taggen.insert = function( content ) {
 			var content = "<p>"+content+"</p>";
+			insertTextAtCursor(content);
 			$_wpcf7_taggen_insert.apply( this, arguments );
 //			$('#wpecf7visualeditor').html('<?php _e( 'Save to change order', 'wpecf7vb' ); ?>').fadeIn();
 		};
@@ -80,10 +81,19 @@ function wpecf7vb_admin_head_scripts() {
 			$textarea = $("textarea#wpcf7-form").clone();
 			$textform = '<div>' + $textarea.text() + '</div>';
 			var $fields = [];
-			$($textform).find('p').each(function() {
-				$fields[$fields.length]=$(this).prop('outerHTML');
-
+			
+			$($textform).find('p,label').each(function() {
+				myetiquete = $(this)[0].tagName;
+				if(myetiquete=='LABEL'){
+					p_etiquete = $(this).parent()[0].tagName;
+					if(p_etiquete=='DIV'){
+						$fields[$fields.length]=$(this).prop('outerHTML');
+					}	
+				}else{
+					$fields[$fields.length]=$(this).prop('outerHTML');
+				}
 			});
+			
 			var $i= 0;
 			var $newfields = [];
 			var $newtextarea = "";
@@ -136,11 +146,7 @@ function wpecf7vb_admin_head_scripts() {
 //		});
 		
 		//$("#wpcf7-form").css({'background-color':'black'});
-		$(".insert-tag").click(function(){
-			mitag = "<p>"+$(this).parent().parent().find("input.tag").val()+"</p>";
-			insertTextAtCursor(mitag);
-
-		});
+	
 	});
 </script>
 <?php
