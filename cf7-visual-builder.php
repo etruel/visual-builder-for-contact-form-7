@@ -147,7 +147,7 @@ function wpecf7vb_admin_head_scripts() {
 
 function wp_visual_script_footer(){  ?>	
 <style type="text/css">
-	.CodeMirror{width: 440px !important; height: 500px; word-wrap: break-word;}
+	.CodeMirror{width: 99% !important; height: 99%; word-wrap: break-word;}
 	#wpcf7-form{display: none !important;}
 </style>
 <script type="text/javascript">
