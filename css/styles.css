@@ -23,14 +23,14 @@
 }
 
 #wpecf7visualeditor {
-//    width: 50% !important;
+/*    width: 50% !important;*/
     float: right;
 }
 #wpecf7visualeditor div {
     padding-right: 10px;
 }
 #wpecf7textareaeditor {
-//    width: 40% !important;
+/*    width: 40% !important;*/
     display: table;
     min-width: 300px;
 }

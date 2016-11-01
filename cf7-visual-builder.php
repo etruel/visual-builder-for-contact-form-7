@@ -8,7 +8,7 @@ Author URI: http://www.netmdp.com
 License: GPLv2
 Text Domain: wpecf7vb
 Domain Path: /lang/
-Version: 1.0
+Version: 1.1
 */
 
 /* 
@@ -31,39 +31,39 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 define( 'wpecf7vb_PLUGIN', __FILE__ );
 
-
-
-//aplicando script en el fotter
-
-
-
 add_action( 'admin_enqueue_scripts', 'wpecf7vb_admin_enqueue_scripts', 999 );
 function wpecf7vb_admin_enqueue_scripts( $hook_suffix ) {
 	if ( false === strpos( $hook_suffix, 'wpcf7' ) ) {
 		return;
 	}
 
-	wp_enqueue_style( 'wpecf7vb-admin',
-		wpecf7vb_plugin_url( 'css/styles.css' ));
-
-	wp_enqueue_script( 'wpecf7vb-admin-vSort',
-	wpecf7vb_plugin_url( 'js/jquery.vSort.min.js' ),
-	array( 'jquery', 'thickbox', 'wpcf7-admin' ) );
+// wp_enqueue_script( $handle, $src = false, $deps = array(), $ver = false, $in_footer = false ) 
 	
+	wp_enqueue_style( 'wpecf7vb-admin',	wpecf7vb_plugin_url( 'css/styles.css' ));
+	wp_enqueue_script( 'wpecf7vb-admin-vSort',	wpecf7vb_plugin_url( 'js/jquery.vSort.min.js' ), array( 'jquery', 'thickbox', 'wpcf7-admin' ) );
+	
+	wp_enqueue_style( 'wpecf7vb-codemirror', wpecf7vb_plugin_url( 'codemirror/css/codemirror.css' ));
+/*	https://codemirror.net/lib/codemirror.css*/
+	
+	wp_enqueue_style( 'wpecf7vb-monokai',wpecf7vb_plugin_url( 'codemirror/css/monokai.css' ));
 
+	wp_enqueue_script( 'wpecf7vb-mirrorcode',	wpecf7vb_plugin_url( 'codemirror/js/codemirror.js' ), array( 'jquery', 'wpcf7-admin' ) );
+	wp_enqueue_script( 'wpecf7vb-javascript',	wpecf7vb_plugin_url( 'codemirror/js/javascript.js' ), array( 'wpecf7vb-mirrorcode' ) );
+	wp_enqueue_script( 'wpecf7vb-xml',	wpecf7vb_plugin_url( 'codemirror/js/xml.js' ), array( 'wpecf7vb-mirrorcode' ) );
 
-
-//	wp_enqueue_style( 'wpecf7vb-syntax',
-//		wpecf7vb_plugin_url( 'css/codemirror.css' ));
-//
+/*	<script type="text/javascript" src="https://codemirror.net/lib/codemirror.js"></script>*/
+/*	<script type="text/javascript" src="https://codemirror.net/mode/javascript/javascript.js"></script>*/
+/*	<script type="text/javascript" src="https://codemirror.net/mode/xml/xml.js"></script>*/
+	
 //
 //	// *********	 http://codemirror.net/
-//	wp_enqueue_script( 'wpecf7vb-syntax',
-//		wpecf7vb_plugin_url( 'js/codemirror-compressed.js' ),
-//		array( 'jquery', 'wpcf7-admin' ) );
+//	wp_enqueue_script( 'wpecf7vb-syntax', wpecf7vb_plugin_url( 'js/codemirror-compressed.js' ),	array( 'jquery', 'wpcf7-admin' ) );
 
+	//Added here to call it just on cf7 settings page
 	add_action('admin_head', 'wpecf7vb_admin_head_scripts');
-	
+
+	//creating functions for footer ALBERTO
+	add_action('admin_footer','wp_visual_script_footer');	
 }
 
 function wpecf7vb_admin_head_scripts() {
@@ -139,34 +139,17 @@ function wpecf7vb_admin_head_scripts() {
 			$('#wpecf7visualeditor').toggle();
 		});
 
-//		var editor = CodeMirror.fromTextArea(document.getElementById("wpcf7-form"), {
-//			lineNumbers: true,
-//			mode: "text/html",
-//			extraKeys: {"Ctrl-Space": "autocomplete"}
-//		});
-		
-		//$("#wpcf7-form").css({'background-color':'black'});
-	
 	});
 </script>
 <?php
 }
 
-//creating functions for footer ALBERTO
-add_action('admin_footer','wp_visual_script_footer');
-function wp_visual_script_footer(){
 
-	wp_enqueue_style( 'wpecf7vb-syntax',wpecf7vb_plugin_url( 'codemirror/css/monokai.css' ));
-	
-?>	
-<link rel="stylesheet" type="text/css" href="https://codemirror.net/lib/codemirror.css">
+function wp_visual_script_footer(){  ?>	
 <style type="text/css">
 	.CodeMirror{width: 440px !important; height: 500px; word-wrap: break-word;}
 	#wpcf7-form{display: none !important;}
 </style>
-<script type="text/javascript" src="https://codemirror.net/lib/codemirror.js"></script>
-<script type="text/javascript" src="https://codemirror.net/mode/javascript/javascript.js"></script>
-<script type="text/javascript" src="https://codemirror.net/mode/xml/xml.js"></script>
 <script type="text/javascript">
     var config, editor;
     var mytextarea = document.getElementById("wpcf7-form");
@@ -215,9 +198,7 @@ function wp_visual_script_footer(){
 }
 
 add_filter('wpcf7_editor_panels', 'WPe_Visual_CF7');
-function WPe_Visual_CF7($panels
-	) {
-	
+function WPe_Visual_CF7($panels	) {
 	//$visualform['visualform-panel'] = array(
 	$panels['form-panel'] = array(
 			'title' => __( 'Visual Form', 'contact-form-7' ),

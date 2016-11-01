@@ -3,8 +3,8 @@ Contributors: etruel
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GT3UVS8UCAHV8
 Tags: visual builder, form builder, visual form, contact, form, contact form, feedback, email, ajax, captcha, akismet, multilingual
 Requires at least: 4.1
-Tested up to: 4.3.1
-Stable tag: 1.0
+Tested up to: 4.7
+Stable tag: 1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -52,6 +52,11 @@ You can either install it automatically from the WordPress admin, or do it manua
  
 
 == Changelog ==
+
+= 1.1 =
+Second approach:
+Added HTML code highlighter in the textarea.
+Added support for "p" and "label" html tags.  (Until now was just p)
 
 = 1.0 =
 First approach to Visual Builder for forms from Contact Form 7.
