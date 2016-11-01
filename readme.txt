@@ -1,0 +1,57 @@
+=== Visual Builder for Contact Form 7 ===
+Contributors: etruel
+Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GT3UVS8UCAHV8
+Tags: visual builder, form builder, visual form, contact, form, contact form, feedback, email, ajax, captcha, akismet, multilingual
+Requires at least: 4.1
+Tested up to: 4.3.1
+Stable tag: 1.0
+License: GPLv2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+
+Adds a Visual Builder for contact form 7 forms.  ADD-on.  Requires Contact Form 7 Plugin.
+
+== Description ==
+
+Currently Contact Form 7 plugin just allow editing forms with HTML in standard textarea.  This Add-on allows previews, items order with drag and drop, and deletes field items just with a click.
+
+See [Screenshots](https://wordpress.org/plugins/visual-builder-for-contact-form-7/screenshots/) to simple instructions.
+
+== Installation ==
+
+You can either install it automatically from the WordPress admin, or do it manually:
+
+= Using the Plugin Manager =
+
+1. Click Plugins
+2. Click Add New
+3. Search for `Contact Form 7 Visual Builder`
+4. Click Install
+5. Click Install Now
+6. Click Activate Plugin
+7. Now you must see a Form Preview with Visual Builder options near textarea when edit a form
+
+= Manually =
+
+1. Upload `contact-form-7-visual-builder` folder to the `/wp-content/plugins/` directory
+2. Activate the plugin through the 'Plugins' menu in WordPress
+
+
+== Screenshots ==
+
+1. Standard textarea from Contact Form 7, will be replaced with Visual Builder.
+
+2. New areas added after activate the plugin.  Every field is reflected with <p> tag in textarea.
+
+3. Now you can Drag & Drop to change fields order. (If Adds a new field with above tags, must save to see changes in Visual Builder)
+
+4. After Drop a field you'll see the change also in textarea. You must save Form to save all you have changes.
+
+5. Option to delete a field and its labels just with a click.
+
+6. Click de eye to hide/show the Visual Builder.
+ 
+
+== Changelog ==
+
+= 1.0 =
+First approach to Visual Builder for forms from Contact Form 7.
