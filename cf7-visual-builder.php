@@ -95,6 +95,7 @@ function wpecf7vb_admin_head_scripts() {
 			});
 			//sincronized textarea and codemirror
 			$("textarea#wpcf7-form").text($newtextarea);
+			sincronized_textarea();
 		};
 		
 		$form = $("#wpecf7visualeditor .wpcf7[role='form']");
@@ -154,7 +155,7 @@ function wp_visual_script_footer(){
 ?>	
 <link rel="stylesheet" type="text/css" href="https://codemirror.net/lib/codemirror.css">
 <style type="text/css">
-	.CodeMirror{width: 480px !important; height: 500px; word-wrap: break-word;}
+	.CodeMirror{width: 440px !important; height: 500px; word-wrap: break-word;}
 	#wpcf7-form{display: none !important;}
 </style>
 <script type="text/javascript" src="https://codemirror.net/lib/codemirror.js"></script>
@@ -181,7 +182,6 @@ function wp_visual_script_footer(){
     	document.getElementById("wpcf7-form").value = text;
     }
     function sincronized_textarea(){
-
     	text = document.getElementById("wpcf7-form").value;
     	editor.setValue(text);
     }
