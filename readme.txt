@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: visual builder, form builder, visual form, contact, form, contact form, feedback, email, ajax, captcha, akismet, multilingual
 Requires at least: 4.1
 Tested up to: 4.7
-Stable tag: 1.1
+Stable tag: 2.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -52,6 +52,15 @@ You can either install it automatically from the WordPress admin, or do it manua
  
 
 == Changelog ==
+
+= 2.0 =
+Closest...
+* Tweak, the color scheme is now htmlmixed for html, js and css coding.
+* Tweak, eye icon is now a wordpress dashicon saving loading time of data images in css.
+* Improvement, Visual form view (eye icon) state is now saved on click via ajax.
+* Improvement, TextArea code Highlighter have now selectable themes to choose different colors schemas.
+* Improvement The color schema is saved via ajax on select.
+* New collaborator & new Banners :D
 
 = 1.1 =
 Second approach:

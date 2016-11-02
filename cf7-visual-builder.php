@@ -6,7 +6,7 @@ Description: Adds a Visual Builder for contact form 7 forms.  ADD-on.  Requires 
 Author: Esteban Truelsegaard
 Author URI: http://www.netmdp.com
 License: GPLv2
-Text Domain: wpecf7vb
+Text Domain: visual-builder-for-contact-form-7
 Domain Path: /lang/
 Version: 1.1
 */
@@ -49,23 +49,14 @@ function wpecf7vb_admin_enqueue_scripts( $hook_suffix ) {
 	wp_enqueue_style( 'wpecf7vb-colbat',wpecf7vb_plugin_url( 'codemirror/css/colbat.css' ));
 	wp_enqueue_style( 'wpecf7vb-blackboard',wpecf7vb_plugin_url( 'codemirror/css/blackboard.css' ));
 
-
 	wp_enqueue_script( 'wpecf7vb-mirrorcode',	wpecf7vb_plugin_url( 'codemirror/js/codemirror.js' ), array( 'jquery', 'wpcf7-admin' ) );
 	wp_enqueue_script( 'wpecf7vb-javascript',	wpecf7vb_plugin_url( 'codemirror/js/javascript.js' ), array( 'wpecf7vb-mirrorcode' ) );
 	wp_enqueue_script( 'wpecf7vb-xml',	wpecf7vb_plugin_url( 'codemirror/js/xml.js' ), array( 'wpecf7vb-mirrorcode' ) );
-
-/*	<script type="text/javascript" src="https://codemirror.net/lib/codemirror.js"></script>*/
-/*	<script type="text/javascript" src="https://codemirror.net/mode/javascript/javascript.js"></script>*/
-/*	<script type="text/javascript" src="https://codemirror.net/mode/xml/xml.js"></script>*/
-	
-//
-//	// *********	 http://codemirror.net/
-//	wp_enqueue_script( 'wpecf7vb-syntax', wpecf7vb_plugin_url( 'js/codemirror-compressed.js' ),	array( 'jquery', 'wpcf7-admin' ) );
+	wp_enqueue_script( 'wpecf7vb-css',	wpecf7vb_plugin_url( 'codemirror/js/css.js' ), array( 'wpecf7vb-mirrorcode' ) );
+	wp_enqueue_script( 'wpecf7vb-htmlmixed',	wpecf7vb_plugin_url( 'codemirror/js/htmlmixed.js' ), array( 'wpecf7vb-mirrorcode','wpecf7vb-xml' ) );
 
 	//Added here to call it just on cf7 settings page
 	add_action('admin_head', 'wpecf7vb_admin_head_scripts');
-
-	//creating functions for footer ALBERTO
 	add_action('admin_footer','wp_visual_script_footer');	
 }
 
@@ -77,7 +68,7 @@ function wpecf7vb_admin_head_scripts() {
 			var content = "<p>"+content+"</p>";
 			insertTextAtCursor(content);
 			$_wpcf7_taggen_insert.apply( this, arguments );
-//			$('#wpecf7visualeditor').html('<?php _e( 'Save to change order', 'wpecf7vb' ); ?>').fadeIn();
+//			$('#wpecf7visualeditor').html('<?php _e( 'Save to change order', 'visual-builder-for-contact-form-7' ); ?>').fadeIn();
 		};
 		
 		changeorder = function($form){
@@ -189,7 +180,7 @@ function wp_visual_script_footer(){  ?>
     var mytheme = "<?php print(get_option('wpecf7vb_selection_theme')); ?>"
     config = {
         lineNumbers: true,
-        mode: "xml",
+        mode: "htmlmixed",
         theme: mytheme,
         indentWithTabs: false,
         htmlMode: true,
@@ -245,15 +236,14 @@ function WPe_Visual_CF7($panels	) {
 
 function wpecf7vb_editor_panel_form($post) {
 //	global $pagenow, $screen, $current_screen, $current_page;
-	$style_wpecf7vb_editor;
+	$style_wpecf7vb_editor='';
 	$class_iconeyes="seeornot dashicons dashicons-visibility";
-	if(get_option("icon_eyes_status")=="seeornot dashicons dashicons-visibility"){
+//	if(get_option("icon_eyes_status")=="seeornot dashicons dashicons-visibility"){
 		//$style_wpecf7vb_editor = "display:block";
-	}else if(get_option("icon_eyes_status")=="seeornot dashicons dashicons-hidden"){
+//	}else if(get_option("icon_eyes_status")=="seeornot dashicons dashicons-hidden"){
+	if( strpos( get_option("icon_eyes_status"), 'hidden') !== false ) {
 		$style_wpecf7vb_editor = "display:none";
 		$class_iconeyes = "seeornot dashicons dashicons-hidden";
-	}else{
-		//$style_wpecf7vb_editor = "display:block";
 	}
 ?>
 <i class="<?php print($class_iconeyes); ?>"></i>
@@ -274,11 +264,22 @@ function wpecf7vb_editor_panel_form($post) {
 		<textarea id="wpcf7-form" name="wpcf7-form" cols="100" rows="24" class="large-text code">
 		<?php echo esc_textarea( $post->prop( 'form' ) ); ?></textarea>
 		<!--select themes-->
-		<select id="themes-selection-editor">
-			<option value="">Colors Scheme</option>
-			<option value="monokai">Monokai</option>
-			<option value="blackboard">Blackboard</option>
-			<option value="cobalt">Cobalt</option>
+<?php /**
+ * Outputs the html selected attribute.
+ * Compares the first two arguments and if identical marks as selected
+ * @param mixed $selected One of the values to compare
+ * @param mixed $current  (true) The other value to compare if not just true
+ * @param bool  $echo     Whether to echo or just return the string
+ * @return string html attribute or empty string
+ *
+function selected( $selected, $current = true, $echo = true ) {
+*/ ?>
+		<?php $selected_theme = get_option('wpecf7vb_selection_theme'); ?>
+		<select id="themes-selection-editor"> 
+			<option value="" <?php selected('', $selected_theme, true) ?>><?php _e('Colors Scheme','visual-builder-for-contact-form-7'); ?></option>
+			<option value="monokai" <?php selected('monokai', $selected_theme, true) ?>>Monokai</option>
+			<option value="blackboard" <?php selected('blackboard', $selected_theme, true) ?>>Blackboard</option>
+			<option value="cobalt" <?php selected('cobalt', $selected_theme, true) ?>>Cobalt</option>
 		</select>
 	</div>
 	</div>
