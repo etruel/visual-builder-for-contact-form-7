@@ -46,6 +46,9 @@ function wpecf7vb_admin_enqueue_scripts( $hook_suffix ) {
 /*	https://codemirror.net/lib/codemirror.css*/
 	
 	wp_enqueue_style( 'wpecf7vb-monokai',wpecf7vb_plugin_url( 'codemirror/css/monokai.css' ));
+	wp_enqueue_style( 'wpecf7vb-colbat',wpecf7vb_plugin_url( 'codemirror/css/colbat.css' ));
+	wp_enqueue_style( 'wpecf7vb-blackboard',wpecf7vb_plugin_url( 'codemirror/css/blackboard.css' ));
+
 
 	wp_enqueue_script( 'wpecf7vb-mirrorcode',	wpecf7vb_plugin_url( 'codemirror/js/codemirror.js' ), array( 'jquery', 'wpcf7-admin' ) );
 	wp_enqueue_script( 'wpecf7vb-javascript',	wpecf7vb_plugin_url( 'codemirror/js/javascript.js' ), array( 'wpecf7vb-mirrorcode' ) );
@@ -134,9 +137,43 @@ function wpecf7vb_admin_head_scripts() {
 			});
 		});
 
+
+		//creating ajax function iconeyes
+		function save_icon_eyes(iconeyes){
+			var data = {
+				'action': 'save_iconeyes',
+				'iconeyes':iconeyes
+			};
+			// since 2.8 ajaxurl is always defined in the admin header and points to admin-ajax.php
+			jQuery.post(ajaxurl, data, function(response) {
+				//response
+			});
+		}
+		//creating ajax function selection_theme
+		function save_selection_theme(mytheme){
+
+			var data = {
+				'action': 'save_selection_theme',
+				'selection_theme':mytheme
+			};
+			// since 2.8 ajaxurl is always defined in the admin header and points to admin-ajax.php
+			jQuery.post(ajaxurl, data, function(response) {
+				//response
+			});
+		}
+
+
 		$('.seeornot').click(function(){
-			$('.seeornot').toggleClass('icon-eye-open').toggleClass('icon-eye-close');
+			$('.seeornot').toggleClass('seeornot dashicons dashicons-visibility').toggleClass('seeornot dashicons dashicons-hidden');
 			$('#wpecf7visualeditor').toggle();
+			iconeyes = $(this).attr("class");
+			save_icon_eyes(iconeyes);
+		});
+		//select theme editor
+		$("#themes-selection-editor").change(function(){
+			mytheme = $(this).val();
+			selectTheme(mytheme)
+			save_selection_theme(mytheme)
 		});
 
 	});
@@ -146,25 +183,22 @@ function wpecf7vb_admin_head_scripts() {
 
 
 function wp_visual_script_footer(){  ?>	
-<style type="text/css">
-	.CodeMirror{width: 99% !important; height: 99%; word-wrap: break-word;}
-	#wpcf7-form{display: none !important;}
-</style>
 <script type="text/javascript">
     var config, editor;
     var mytextarea = document.getElementById("wpcf7-form");
+    var mytheme = "<?php print(get_option('wpecf7vb_selection_theme')); ?>"
     config = {
         lineNumbers: true,
         mode: "xml",
-        theme: "monokai",
+        theme: mytheme,
         indentWithTabs: false,
         htmlMode: true,
         readOnly: false,
     };
     editor = CodeMirror.fromTextArea(document.getElementById("wpcf7-form"), config)
    	//FUNCTIONS
-    function selectTheme() {
-        editor.setOption("theme", "monokai");
+    function selectTheme(mytheme) {
+        editor.setOption("theme", mytheme);
     }
     function sincronized_codemirror(){
     	text = editor.getValue();
@@ -211,15 +245,27 @@ function WPe_Visual_CF7($panels	) {
 
 function wpecf7vb_editor_panel_form($post) {
 //	global $pagenow, $screen, $current_screen, $current_page;
+	$style_wpecf7vb_editor;
+	$class_iconeyes="seeornot dashicons dashicons-visibility";
+	if(get_option("icon_eyes_status")=="seeornot dashicons dashicons-visibility"){
+		//$style_wpecf7vb_editor = "display:block";
+	}else if(get_option("icon_eyes_status")=="seeornot dashicons dashicons-hidden"){
+		$style_wpecf7vb_editor = "display:none";
+		$class_iconeyes = "seeornot dashicons dashicons-hidden";
+	}else{
+		//$style_wpecf7vb_editor = "display:block";
+	}
 ?>
-<i class="seeornot icon-eye-open"></i>
+<i class="<?php print($class_iconeyes); ?>"></i>
 <h3><?php echo __( 'Visual Form', 'wpecf7vb' ); ?></h3>
 	<?php // if($current_screen->id="toplevel_page_wpcf7" ) {} ?>
 	<div class="wpecf7editors">
-	<div class="wpecf7vb_col" id="wpecf7visualeditor" data-callback="changeorder( jQuery('#wpecf7visualeditor') );"><?php
+	<div style="<?php print($style_wpecf7vb_editor); ?>" class="wpecf7vb_col"   id="wpecf7visualeditor" data-callback="changeorder( jQuery('#wpecf7visualeditor') );">
+	<?php
 //		echo '<br><br>'.wpcf7_do_shortcode( '[email* your-email]' ).'<br><hr><hr>';
 		echo  do_shortcode( $post->shortcode() );
-	?></div>
+	?>
+	</div>
 	<div class="wpecf7vb_col" id="wpecf7textareaeditor">
 		<?php
 		$tag_generator = WPCF7_TagGenerator::get_instance();
@@ -227,6 +273,13 @@ function wpecf7vb_editor_panel_form($post) {
 		?>
 		<textarea id="wpcf7-form" name="wpcf7-form" cols="100" rows="24" class="large-text code">
 		<?php echo esc_textarea( $post->prop( 'form' ) ); ?></textarea>
+		<!--select themes-->
+		<select id="themes-selection-editor">
+			<option value="">Colors Scheme</option>
+			<option value="monokai">Monokai</option>
+			<option value="blackboard">Blackboard</option>
+			<option value="cobalt">Cobalt</option>
+		</select>
 	</div>
 	</div>
 	<div class="clear">	</div>
@@ -241,4 +294,21 @@ function wpecf7vb_plugin_url( $path = '' ) {
 	}
 
 	return $url;
+}
+
+
+/*AJAX FUNCTIONS EDITOR*/
+add_action( 'wp_ajax_save_iconeyes', 'save_iconeyes_callback' );
+add_action("wp_ajax_save_selection_theme",'save_selection_theme_callback');
+function save_iconeyes_callback() {
+	$iconeyes = $_POST['iconeyes'];
+	//save option
+	update_option( 'icon_eyes_status', $iconeyes ); 
+	wp_die(); // this is required to terminate immediately and return a proper response
+}
+function save_selection_theme_callback(){
+	$selection_theme = $_POST['selection_theme'];
+	//save theme
+	update_option('wpecf7vb_selection_theme',$selection_theme);
+	wp_die();
 }
