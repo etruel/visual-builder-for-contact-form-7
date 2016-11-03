@@ -75,21 +75,7 @@ function wpecf7vb_admin_head_scripts() {
 //			$('#wpecf7visualeditor').html('<?php _e( 'Save to change order', 'visual-builder-for-contact-form-7' ); ?>').fadeIn();
 		};
 
-		function init_fields_editor(){
-			$($textform).find('p,label,style,script').each(function() {
-				myetiquete = $(this)[0].tagName;
-				if(myetiquete=='LABEL'){
-					p_etiquete = $(this).parent()[0].tagName;
-					if(p_etiquete=='DIV'){
-						$fields[$fields.length]=$(this).prop('outerHTML');
-					}	
-				}else if(myetiquete=='P' || myetiquete=='SCRIPT'){
-					$fields[$fields.length]=$(this).prop('outerHTML');
-				}else{
-					$styles_fields[$styles_fields.length] = $(this).prop('outerHTML');
- 				}
-			});
-		}
+	
 
 		
 		changeorder = function($form){
