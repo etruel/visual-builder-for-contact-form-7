@@ -61,7 +61,9 @@ function wpecf7vb_admin_enqueue_scripts( $hook_suffix ) {
 }
 
 function wpecf7vb_admin_head_scripts() {
-?><script type="text/javascript" language="javascript">
+?>
+
+<script type="text/javascript" language="javascript">
 	jQuery(document).ready(function($){
 		var $_wpcf7_taggen_insert = _wpcf7.taggen.insert;
 		_wpcf7.taggen.insert = function( content ) {
@@ -75,28 +77,47 @@ function wpecf7vb_admin_head_scripts() {
 			$textarea = $("textarea#wpcf7-form").clone();
 			$textform = '<div>' + $textarea.text() + '</div>';
 			var $fields = [];
+			var $styles_fields = [];
 			
-			$($textform).find('p,label').each(function() {
+			$($textform).find('p,label,style,script').each(function() {
 				myetiquete = $(this)[0].tagName;
 				if(myetiquete=='LABEL'){
 					p_etiquete = $(this).parent()[0].tagName;
 					if(p_etiquete=='DIV'){
 						$fields[$fields.length]=$(this).prop('outerHTML');
 					}	
-				}else{
+				}else if(myetiquete=='P'){
 					$fields[$fields.length]=$(this).prop('outerHTML');
-				}
+				}else{
+					$styles_fields[$styles_fields.length] = $(this).prop('outerHTML');
+ 				}
 			});
 			
 			var $i= 0;
+			var $j = 0;
 			var $newfields = [];
+			var $newstyles = [];
 			var $newtextarea = "";
-			$form.find('.sortitem').each(function() {
-				$newfields[ $newfields.length ] = $fields[ $(this).attr('data-order') ];
-				$newtextarea += $fields[ $(this).attr('data-order') ] + "\n\n";
-				$(this).attr('data-order',$i);
-				$i++;
-			});
+
+			function function_add_field(){
+				for($j=0; $j<$styles_fields.length;$j++){
+					$newtextarea += $styles_fields[$j] + "\n\n";
+				}
+				if($j>=$styles_fields.length){
+					$form.find('.sortitem').each(function() {
+						$newfields[$newfields.length] = $fields[$(this).attr('data-order')];
+						
+						$newtextarea += $fields[$(this).attr('data-order')] + "\n\n";
+						$(this).attr('data-order',$i);
+						$i++;
+					});
+				}
+			}
+			function_add_field();
+			
+				
+
+
 			//sincronized textarea and codemirror
 			$("textarea#wpcf7-form").text($newtextarea);
 			sincronized_textarea();
@@ -173,6 +194,10 @@ function wpecf7vb_admin_head_scripts() {
 }
 
 
+
+
+	
+
 function wp_visual_script_footer(){  ?>	
 <script type="text/javascript">
     var config, editor;
@@ -186,7 +211,11 @@ function wp_visual_script_footer(){  ?>
         htmlMode: true,
         readOnly: false,
     };
-    editor = CodeMirror.fromTextArea(document.getElementById("wpcf7-form"), config)
+    editor = CodeMirror.fromTextArea(document.getElementById("wpcf7-form"), config);
+    editor.setSize(100, 100);
+    editor.refresh()
+   
+
    	//FUNCTIONS
     function selectTheme(mytheme) {
         editor.setOption("theme", mytheme);
@@ -219,6 +248,8 @@ function wp_visual_script_footer(){  ?>
 
     setTimeout(selectTheme, 5000);
 </script>
+
+
 <?php	
 }
 
