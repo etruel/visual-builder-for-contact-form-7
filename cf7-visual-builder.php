@@ -86,7 +86,7 @@ function wpecf7vb_admin_head_scripts() {
 					if(p_etiquete=='DIV'){
 						$fields[$fields.length]=$(this).prop('outerHTML');
 					}	
-				}else if(myetiquete=='P'){
+				}else if(myetiquete=='P' || myetiquete=='SCRIPT'){
 					$fields[$fields.length]=$(this).prop('outerHTML');
 				}else{
 					$styles_fields[$styles_fields.length] = $(this).prop('outerHTML');
