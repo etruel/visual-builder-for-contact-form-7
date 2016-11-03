@@ -66,12 +66,31 @@ function wpecf7vb_admin_head_scripts() {
 <script type="text/javascript" language="javascript">
 	jQuery(document).ready(function($){
 		var $_wpcf7_taggen_insert = _wpcf7.taggen.insert;
+
+
 		_wpcf7.taggen.insert = function( content ) {
 			var content = "<p>"+content+"</p>";
 			insertTextAtCursor(content);
 			$_wpcf7_taggen_insert.apply( this, arguments );
 //			$('#wpecf7visualeditor').html('<?php _e( 'Save to change order', 'visual-builder-for-contact-form-7' ); ?>').fadeIn();
 		};
+
+		function init_fields_editor(){
+			$($textform).find('p,label,style,script').each(function() {
+				myetiquete = $(this)[0].tagName;
+				if(myetiquete=='LABEL'){
+					p_etiquete = $(this).parent()[0].tagName;
+					if(p_etiquete=='DIV'){
+						$fields[$fields.length]=$(this).prop('outerHTML');
+					}	
+				}else if(myetiquete=='P' || myetiquete=='SCRIPT'){
+					$fields[$fields.length]=$(this).prop('outerHTML');
+				}else{
+					$styles_fields[$styles_fields.length] = $(this).prop('outerHTML');
+ 				}
+			});
+		}
+
 		
 		changeorder = function($form){
 			$textarea = $("textarea#wpcf7-form").clone();
@@ -292,8 +311,7 @@ function wpecf7vb_editor_panel_form($post) {
 		$tag_generator = WPCF7_TagGenerator::get_instance();
 		$tag_generator->print_buttons();
 		?>
-		<textarea id="wpcf7-form" name="wpcf7-form" cols="100" rows="24" class="large-text code">
-		<?php echo esc_textarea( $post->prop( 'form' ) ); ?></textarea>
+		<textarea id="wpcf7-form" name="wpcf7-form" cols="100" rows="24" class="large-text code"><?php echo esc_textarea( $post->prop( 'form' ) ); ?></textarea>
 		<!--select themes-->
 <?php /**
  * Outputs the html selected attribute.
