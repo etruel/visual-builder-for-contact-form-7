@@ -75,7 +75,7 @@ function wpecf7vb_admin_head_scripts() {
 //			$('#wpecf7visualeditor').html('<?php _e( 'Save to change order', 'visual-builder-for-contact-form-7' ); ?>').fadeIn();
 		};
 
-	
+
 
 		
 		changeorder = function($form){
@@ -84,8 +84,10 @@ function wpecf7vb_admin_head_scripts() {
 			var $fields = [];
 			var $styles_fields = [];
 			
+
 			$($textform).find('p,label,style,script').each(function() {
 				myetiquete = $(this)[0].tagName;
+				
 				if(myetiquete=='LABEL'){
 					p_etiquete = $(this).parent()[0].tagName;
 					if(p_etiquete=='DIV'){
@@ -97,6 +99,13 @@ function wpecf7vb_admin_head_scripts() {
 					$styles_fields[$styles_fields.length] = $(this).prop('outerHTML');
  				}
 			});
+
+			//haciendo un eeach de ejemplo por linea
+			/*var arrayOfLines = $("textarea#wpcf7-form").text().split('\n\n');
+		    $.each(arrayOfLines, function(index, item) {
+		    	$("textarea#wpcf7-form").text($("textarea#wpcf7-form").text()+item+'\n\n');
+		    });*/
+
 			
 			var $i= 0;
 			var $j = 0;
@@ -104,6 +113,7 @@ function wpecf7vb_admin_head_scripts() {
 			var $newstyles = [];
 			var $newtextarea = "";
 
+			//funcion para ordenar todo el elemento
 			function function_add_field(){
 				for($j=0; $j<$styles_fields.length;$j++){
 					$newtextarea += $styles_fields[$j] + "\n\n";
@@ -138,6 +148,7 @@ function wpecf7vb_admin_head_scripts() {
 		$form.prop('outerHTML',	$form.html());
 		var $i= 0;
 		$('#wpecf7visualeditor p').each(function() {
+			
 			$(this).prop('outerHTML', '<div class="sortitem" data-order="'+$i+'"><span class="sorthandle"> </span><span unselectable="on" class="itemactions"><span class="itemdelete"> </span></span>' +	$(this).prop('outerHTML') + '</div>' );
 			$i++;
 		});
@@ -191,6 +202,29 @@ function wpecf7vb_admin_head_scripts() {
 			mytheme = $(this).val();
 			selectTheme(mytheme)
 			save_selection_theme(mytheme)
+		});
+		$('p.submit').on('click',function(){
+			//funcion para cambiar los datos
+			var separators = ['\n\n', '\\\+', '>\n','\n\n\n'];
+			//anntes de que pase por aca
+			var piezes_submit = $("textarea#wpcf7-form").text().split(new RegExp(separators.join('|'), 'g'));
+			for (var i = 0; i < piezes_submit.length; i++) {
+			
+				 if(piezes_submit[i].indexOf('[submit') >-1){
+				 	//aqui veremos si tiene por detras alguna etiqueta HTML de ser asi no pasara
+				 	if(piezes_submit[i].indexOf('>')>-1){
+				 		//no pasa nada
+				 	}else{
+				 		//borramos los espacios en blanco que existan
+				 		piezes_submit[i] = piezes_submit[i].replace('\n','');
+				 		//ahora guardamos las posiciones  y el field en el arreglo
+				 		$("textarea#wpcf7-form").text($("textarea#wpcf7-form").text().replace(piezes_submit[i],'<p>'+piezes_submit[i]+'</p>'));
+				 		sincronized_textarea();
+				 		
+				 	}
+				 }
+			}
+			//AGREGAMOS A LOS SHORTCODES UN PARRAFO PARA QUE ESTE FUNCIONE
 		});
 
 	});
@@ -342,6 +376,7 @@ function save_iconeyes_callback() {
 	update_option( 'icon_eyes_status', $iconeyes ); 
 	wp_die(); // this is required to terminate immediately and return a proper response
 }
+
 function save_selection_theme_callback(){
 	$selection_theme = $_POST['selection_theme'];
 	//save theme
