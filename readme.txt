@@ -55,11 +55,13 @@ You can either install it automatically from the WordPress admin, or do it manua
 
 = 2.0 =
 Closest...
+* Tested with WP 4.7 and CF7 4.6
 * Tweak, the color scheme is now htmlmixed for html, js and css coding.
 * Tweak, eye icon is now a wordpress dashicon saving loading time of data images in css.
 * Improvement, Visual form view (eye icon) state is now saved on click via ajax.
 * Improvement, TextArea code Highlighter have now selectable themes to choose different colors schemas.
 * Improvement The color schema is saved via ajax on select.
+* Fixes the shortcodes without html tags as in default forms adding p tags.
 * New collaborator & new Banners :D
 
 = 1.1 =
@@ -69,3 +71,6 @@ Added support for "p" and "label" html tags.  (Until now was just p)
 
 = 1.0 =
 First approach to Visual Builder for forms from Contact Form 7.
+
+== Upgrade Notice ==
+2.0 Continues doing a better Visual Builder for forms from Contact Form 7.

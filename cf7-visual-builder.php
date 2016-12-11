@@ -8,7 +8,7 @@ Author URI: http://www.netmdp.com
 License: GPLv2
 Text Domain: visual-builder-for-contact-form-7
 Domain Path: /lang/
-Version: 1.1
+Version: 2.0
 */
 
 /* 
