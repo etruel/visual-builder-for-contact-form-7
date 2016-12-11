@@ -8,13 +8,15 @@ Stable tag: 2.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Adds a Visual Builder for contact form 7 forms.  ADD-on.  Requires Contact Form 7 Plugin.
+Adds a Visual Builder and a code highlighter for contact form 7 forms.  ADD-on.  Requires Contact Form 7 Plugin.
 
 == Description ==
 
 Currently Contact Form 7 plugin just allow editing forms with HTML in standard textarea.  This Add-on allows previews, items order with drag and drop, and deletes field items just with a click.
 
-See [Screenshots](https://wordpress.org/plugins/visual-builder-for-contact-form-7/screenshots/) to simple instructions.
+Also adds a HTML code highlighter in the textarea and some selectable themes to choose different colors schemes.
+
+See [Screenshots](https://wordpress.org/plugins/visual-builder-for-contact-form-7/screenshots/) to see simple instructions and get an idea of its appearance.
 
 == Installation ==
 
@@ -38,9 +40,9 @@ You can either install it automatically from the WordPress admin, or do it manua
 
 == Screenshots ==
 
-1. Standard textarea from Contact Form 7, will be replaced with Visual Builder.
+1. Standard textarea from Contact Form 7, will be replaced with Visual Builder.  Every field without html tags is reflected with <p> tag in textarea when the form is saved.
 
-2. New areas added after activate the plugin.  Every field is reflected with <p> tag in textarea.
+2. New areas added after activate the plugin. Now you can see the textarea with code highlighter with some themes to choice.  At right-top cornner an eye to show or hide the visual form fields. 
 
 3. Now you can Drag & Drop to change fields order. (If Adds a new field with above tags, must save to see changes in Visual Builder)
 
@@ -59,7 +61,7 @@ Closest...
 * Tweak, the color scheme is now htmlmixed for html, js and css coding.
 * Tweak, eye icon is now a wordpress dashicon saving loading time of data images in css.
 * Improvement, Visual form view (eye icon) state is now saved on click via ajax.
-* Improvement, TextArea code Highlighter have now selectable themes to choose different colors schemas.
+* Improvement, TextArea code Highlighter have now selectable themes to choose different colors schemes.
 * Improvement The color schema is saved via ajax on select.
 * Fixes the shortcodes without html tags as in default forms adding p tags.
 * New collaborator & new Banners :D

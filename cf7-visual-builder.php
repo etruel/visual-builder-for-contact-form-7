@@ -100,13 +100,6 @@ function wpecf7vb_admin_head_scripts() {
  				}
 			});
 
-			//haciendo un eeach de ejemplo por linea
-			/*var arrayOfLines = $("textarea#wpcf7-form").text().split('\n\n');
-		    $.each(arrayOfLines, function(index, item) {
-		    	$("textarea#wpcf7-form").text($("textarea#wpcf7-form").text()+item+'\n\n');
-		    });*/
-
-			
 			var $i= 0;
 			var $j = 0;
 			var $newfields = [];
@@ -130,9 +123,6 @@ function wpecf7vb_admin_head_scripts() {
 			}
 			function_add_field();
 			
-				
-
-
 			//sincronized textarea and codemirror
 			$("textarea#wpcf7-form").text($newtextarea);
 			sincronized_textarea();
@@ -231,10 +221,6 @@ function wpecf7vb_admin_head_scripts() {
 </script>
 <?php
 }
-
-
-
-
 	
 
 function wp_visual_script_footer(){  ?>	
