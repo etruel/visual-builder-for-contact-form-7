@@ -32,12 +32,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 define( 'wpecf7vb_PLUGIN', __FILE__ );
 
 add_action( 'admin_enqueue_scripts', 'wpecf7vb_admin_enqueue_scripts', 999 );
+
+
 function wpecf7vb_admin_enqueue_scripts( $hook_suffix ) {
 	if ( false === strpos( $hook_suffix, 'wpcf7' ) ) {
 		return;
 	}
 
-// wp_enqueue_script( $handle, $src = false, $deps = array(), $ver = false, $in_footer = false ) 
+// wp_enqueue_script( $handle, $src = false, $deps = array(), $ver f= false, $in_footer = false ) 
 	
 	wp_enqueue_style( 'wpecf7vb-admin',	wpecf7vb_plugin_url( 'css/styles.css' ));
 	wp_enqueue_script( 'wpecf7vb-admin-vSort',	wpecf7vb_plugin_url( 'js/jquery.vSort.min.js' ), array( 'jquery', 'thickbox', 'wpcf7-admin' ) );
@@ -61,6 +63,8 @@ function wpecf7vb_admin_enqueue_scripts( $hook_suffix ) {
 }
 
 function wpecf7vb_admin_head_scripts() {
+
+	$nonce = wp_create_nonce('wpc_visual_nonce' );
 ?>
 
 <script type="text/javascript" language="javascript">
@@ -71,7 +75,10 @@ function wpecf7vb_admin_head_scripts() {
 		_wpcf7.taggen.insert = function( content ) {
 			var content = "<p>"+content+"</p>";
 			insertTextAtCursor(content);
+			$("#wpcf7-form").text(get_codemirror());
+
 			$_wpcf7_taggen_insert.apply( this, arguments );
+
 //			$('#wpecf7visualeditor').html('<?php _e( 'Save to change order', 'visual-builder-for-contact-form-7' ); ?>').fadeIn();
 		};
 
@@ -84,19 +91,20 @@ function wpecf7vb_admin_head_scripts() {
 			var $fields = [];
 			var $styles_fields = [];
 			
-
-			$($textform).find('p,label,style,script').each(function() {
+			$($textform).find('>p,>label,>style,>script').each(function() {
 				myetiquete = $(this)[0].tagName;
 				
 				if(myetiquete=='LABEL'){
-					p_etiquete = $(this).parent()[0].tagName;
-					if(p_etiquete=='DIV'){
+					//p_etiquete = $(this).parent()[0].tagName;
+					//if(p_etiquete=='DIV'){
 						$fields[$fields.length]=$(this).prop('outerHTML');
-					}	
+					//}	
 				}else if(myetiquete=='P' || myetiquete=='SCRIPT'){
 					$fields[$fields.length]=$(this).prop('outerHTML');
 				}else{
-					$styles_fields[$styles_fields.length] = $(this).prop('outerHTML');
+					//$styles_fields[$styles_fields.length] = $(this).prop('outerHTML');
+					$fields[$fields.length]=$(this).prop('outerHTML');
+ 					
  				}
 			});
 
@@ -106,7 +114,7 @@ function wpecf7vb_admin_head_scripts() {
 			var $newstyles = [];
 			var $newtextarea = "";
 
-			//funcion para ordenar todo el elemento
+			//function to sort all the element
 			function function_add_field(){
 				for($j=0; $j<$styles_fields.length;$j++){
 					$newtextarea += $styles_fields[$j] + "\n\n";
@@ -126,6 +134,8 @@ function wpecf7vb_admin_head_scripts() {
 			//sincronized textarea and codemirror
 			$("textarea#wpcf7-form").text($newtextarea);
 			sincronized_textarea();
+			sincronized_textarea2($("#wpcf7-form").text());
+
 		};
 		
 		$form = $("#wpecf7visualeditor .wpcf7[role='form']");
@@ -145,14 +155,20 @@ function wpecf7vb_admin_head_scripts() {
 		$('#wpecf7visualeditor').vSort();
 
 		$(document).on("click", '.itemdelete', function(){
-			$nItem = $(this).parent().parent().attr('data-order');
+			$nItem = parseInt($(this).parent().parent().attr('data-order'));
+			$html_temp = "";
 			$('.sortitem[data-order="'+$nItem+'"]').remove();
-			changeorder( $('#wpecf7visualeditor') );
+			changeorder($('#wpecf7visualeditor'));
 			var $i= 0;
 			$('.sortitem').each(function() {
 				$(this).attr('data-order', $i );
 				$i++;
 			});
+
+			if($(this).hasClass('refresh-delete')){
+				sincronized_textarea2($("#wpcf7-form").text());
+			}
+
 		});
 
 
@@ -160,6 +176,7 @@ function wpecf7vb_admin_head_scripts() {
 		function save_icon_eyes(iconeyes){
 			var data = {
 				'action': 'save_iconeyes',
+				_ajax_nonce : "<?php echo $nonce; ?>",
 				'iconeyes':iconeyes
 			};
 			// since 2.8 ajaxurl is always defined in the admin header and points to admin-ajax.php
@@ -169,14 +186,32 @@ function wpecf7vb_admin_head_scripts() {
 		}
 		//creating ajax function selection_theme
 		function save_selection_theme(mytheme){
-
 			var data = {
 				'action': 'save_selection_theme',
+				_ajax_nonce : "<?php echo $nonce; ?>",
 				'selection_theme':mytheme
 			};
 			// since 2.8 ajaxurl is always defined in the admin header and points to admin-ajax.php
 			jQuery.post(ajaxurl, data, function(response) {
 				//response
+			});
+		}
+		//creating ajax function refresh visual form
+		function fnrefresh_visual_form(myshortcode){
+			var data = {
+				'action': 'refresh_visual',
+				_ajax_nonce : "<?php echo $nonce; ?>",
+				'refresh_visual_form':myshortcode
+			};
+			
+			jQuery.post(ajaxurl, data, function(response) {
+				//response
+				$("#wpecf7visualeditor").html(response);
+				//igualamos el textarea con el codemirror
+				$("#wpcf7-form").text(get_codemirror());
+
+				//refrescanis
+				$('#wpecf7visualeditor').vSort();
 			});
 		}
 
@@ -193,29 +228,59 @@ function wpecf7vb_admin_head_scripts() {
 			selectTheme(mytheme)
 			save_selection_theme(mytheme)
 		});
+
 		$('p.submit').on('click',function(){
-			//funcion para cambiar los datos
+			//function to change the data
 			var separators = ['\n\n', '\\\+', '>\n','\n\n\n'];
-			//anntes de que pase por aca
+			//before pass by here
 			var piezes_submit = $("textarea#wpcf7-form").text().split(new RegExp(separators.join('|'), 'g'));
 			for (var i = 0; i < piezes_submit.length; i++) {
 			
 				 if(piezes_submit[i].indexOf('[submit') >-1){
-				 	//aqui veremos si tiene por detras alguna etiqueta HTML de ser asi no pasara
+				 	//here to see if you have some HTML to be tag behind so not happened
 				 	if(piezes_submit[i].indexOf('>')>-1){
 				 		//no pasa nada
 				 	}else{
-				 		//borramos los espacios en blanco que existan
+				 		//delete the blank spaces that exist
 				 		piezes_submit[i] = piezes_submit[i].replace('\n','');
-				 		//ahora guardamos las posiciones  y el field en el arreglo
+				 		//now save the positions and field on the array
 				 		$("textarea#wpcf7-form").text($("textarea#wpcf7-form").text().replace(piezes_submit[i],'<p>'+piezes_submit[i]+'</p>'));
 				 		sincronized_textarea();
-				 		
 				 	}
 				 }
 			}
-			//AGREGAMOS A LOS SHORTCODES UN PARRAFO PARA QUE ESTE FUNCIONE
+			//ADD TO THE SHORTCODES A PARAGRAPH TO THIS WORK
 		});
+
+
+		 //refresh visual form
+	    $(".refresh-visual").click(function(){
+	    	//We will first remove the data
+	    	$("#wpecf7visualeditor").css({'width':'400px !important','border':'2px solid #ccc'});
+			$("#wpecf7visualeditor").find("*").remove();
+
+			$("#wpecf7visualeditor").html('<div style="width:350px !important; height:150px !important; border:2px solid #ccc;"><center><p><i class="dashicons dashicons-image-rotate" style="font-size:80px; margin-top:20px;"></i></p><p>Refresh....</p></center></div>');
+	    	
+			$textform_temp = '<div>'+$("#wpcf7-form").val()+ '</div>';
+			$mihtml = '';
+			//take the form to refresh the visual
+			$($textform_temp).find('>p,>label,>style,>script').each(function(i) {
+
+				myetiquete = $(this)[0].tagName;
+				if(myetiquete=='LABEL'){
+					$mihtml+= '<div class="sortitem" data-order="'+i+'"><span class="sorthandle" unselectable="on"></span><span unselectable="on" class="itemactions"><span class="itemdelete refresh-delete" style="position:absolute; top:0; margin-top-20px; right:0; padding-right:10px;">  </span></span><p>'+$(this).prop("outerHTML")+'</p></div>';
+				}else if(myetiquete=='P'){
+					$mihtml+= '<div class="sortitem" data-order="'+i+'"><span class="sorthandle" unselectable="on"></span><span unselectable="on" class="itemactions"><span class="itemdelete refresh-delete" style="position:absolute; top:0; right:0; margin-top-20px; padding-right:10px;"> </span></span>'+$(this).prop("outerHTML")+'</div>';
+				}else{
+					$mihtml+= '<div class="sortitem" data-order="'+i+'"><span class="sorthandle" unselectable="on"></span><span unselectable="on" class="itemactions"><span class="itemdelete refresh-delete" style="position:absolute; top:0; right:0; margin-top-20px; padding-right:10px;"> </span></span><p>'+$(this).prop("outerHTML")+'</p></div>';
+
+				}
+
+			});
+			//here call the ajax that we return the cooled form
+	   		fnrefresh_visual_form($mihtml);
+	    });
+
 
 	});
 </script>
@@ -239,7 +304,7 @@ function wp_visual_script_footer(){  ?>
     editor = CodeMirror.fromTextArea(document.getElementById("wpcf7-form"), config);
     editor.setSize(100, 100);
     editor.refresh()
-   
+  
 
    	//FUNCTIONS
     function selectTheme(mytheme) {
@@ -247,12 +312,24 @@ function wp_visual_script_footer(){  ?>
     }
     function sincronized_codemirror(){
     	text = editor.getValue();
+       	document.getElementById("wpcf7-form").value = text;
+    }
+    //polimorfismo
+    function sincronized_codemirror2(text){
+
     	document.getElementById("wpcf7-form").value = text;
+    }
+    function get_codemirror(){
+    	return editor.getValue();
     }
     function sincronized_textarea(){
     	text = document.getElementById("wpcf7-form").value;
     	editor.setValue(text);
     }
+    function sincronized_textarea2(text){
+    	editor.setValue(text);
+    }
+      
     //CLOSED FUNCTIONS---
 
     //sincronized codemirror
@@ -268,10 +345,10 @@ function wp_visual_script_footer(){  ?>
 	function insertTextAtCursor(text) {
    		cursor = editor.getCursor();
     	editor.replaceRange(text, cursor);
-		sincronized_codemirror();
 	}
-
     setTimeout(selectTheme, 5000);
+
+
 </script>
 
 
@@ -302,16 +379,31 @@ function wpecf7vb_editor_panel_form($post) {
 		$class_iconeyes = "seeornot dashicons dashicons-hidden";
 	}
 ?>
-<i class="<?php print($class_iconeyes); ?>"></i>
+
+
+<?php 
+	
+	
+	
+?>
+
+<!--element-->
+<i style="float: right;" class="<?php print($class_iconeyes); ?>"></i>
+
+<i title="Refresh Visual Form" class="dashicons dashicons-image-rotate refresh-visual" style="float: right;margin-right: 275px; margin-top: 5px; cursor: pointer;"></i>
 <h3><?php echo __( 'Visual Form', 'wpecf7vb' ); ?></h3>
 	<?php // if($current_screen->id="toplevel_page_wpcf7" ) {} ?>
 	<div class="wpecf7editors">
-	<div style="<?php print($style_wpecf7vb_editor); ?>" class="wpecf7vb_col"   id="wpecf7visualeditor" data-callback="changeorder( jQuery('#wpecf7visualeditor') );">
-	<?php
-//		echo '<br><br>'.wpcf7_do_shortcode( '[email* your-email]' ).'<br><hr><hr>';
-		echo  do_shortcode( $post->shortcode() );
-	?>
-	</div>
+	<!--option to hide the element visual provided the post not be has saved yet-->
+	<?php if(!empty(get_post_status($_GET['post']))){ ?>	
+		<div style="<?php print($style_wpecf7vb_editor); ?>" class="wpecf7vb_col"   id="wpecf7visualeditor" data-callback="changeorder( jQuery('#wpecf7visualeditor') );">
+		<?php
+			//echo print_r($post->shortcode());
+			echo  do_shortcode( $post->shortcode() );
+			//echo wpcf7_replace_all_form_tags('<p>Mensaje[textarea your-message]</p><p>[submit "Enviar2"]</p>');
+		?>
+		</div>
+	<?php } ?>
 	<div class="wpecf7vb_col" id="wpecf7textareaeditor">
 		<?php
 		$tag_generator = WPCF7_TagGenerator::get_instance();
@@ -356,16 +448,35 @@ function wpecf7vb_plugin_url( $path = '' ) {
 /*AJAX FUNCTIONS EDITOR*/
 add_action( 'wp_ajax_save_iconeyes', 'save_iconeyes_callback' );
 add_action("wp_ajax_save_selection_theme",'save_selection_theme_callback');
+//actions refresh visual 
+add_action('wp_ajax_refresh_visual','refresh_visual_callback');
+
+
+//ajax icons
 function save_iconeyes_callback() {
+	//nonce referer
+	check_ajax_referer('wpc_visual_nonce');
 	$iconeyes = $_POST['iconeyes'];
 	//save option
 	update_option( 'icon_eyes_status', $iconeyes ); 
 	wp_die(); // this is required to terminate immediately and return a proper response
 }
 
+//ajax save theme sublime
 function save_selection_theme_callback(){
+	check_ajax_referer('wpc_visual_nonce');
 	$selection_theme = $_POST['selection_theme'];
 	//save theme
 	update_option('wpecf7vb_selection_theme',$selection_theme);
 	wp_die();
+}
+//ajax refresh visual
+function refresh_visual_callback(){
+	check_ajax_referer('wpc_visual_nonce');
+	$refresh_visual_form = wpcf7_replace_all_form_tags($_POST['refresh_visual_form']);
+	$refresh_visual_form = str_replace('\\', '', $refresh_visual_form);
+	$refresh_visual_form = str_replace('<span class', '<br><span class', $refresh_visual_form);
+	echo $refresh_visual_form;
+	wp_die();
+
 }

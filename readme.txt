@@ -1,5 +1,5 @@
 === Visual Builder for Contact Form 7 ===
-Contributors: etruel
+Contributors: etruel,albertdesinger
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GT3UVS8UCAHV8
 Tags: visual builder, form builder, visual form, contact, form, contact form, feedback, email, ajax, captcha, akismet, multilingual
 Requires at least: 4.1
@@ -54,6 +54,12 @@ You can either install it automatically from the WordPress admin, or do it manua
  
 
 == Changelog ==
+
+= 2.1 =
+* Improvement in the text editor when working with javascript and css: You can now change order like any field
+* Option to refresh the visual form
+
+
 
 = 2.0 =
 Closest...
