@@ -83,11 +83,49 @@ function wpecf7vb_admin_head_scripts() {
 		};
 
 
+		//funcion para remover etiquetas creadas temporalmente a los shortcodes
+		function removetags($textarea_temp){
+			$textform  = '<div>'+$textarea_temp+'</div>';
+			var textcontent = '';
+			$($textform).find('>p').each(function(){
+				textcontent = $(this).text();
+				if($(this).hasClass('temp_paragraph')){
+					$textarea_temp = $textarea_temp.replace($(this).prop('outerHTML'),textcontent);	
+				}
+			});
+			return $textarea_temp;
+		}
+		
+		String.prototype.replaceAll = function(search, replacement) {
+		    var target = this;
+		    return target.split(search).join(replacement);
+		};
+
+		//Function grouping in text to move tags while CF7
+		function changeEtiquete(textareavalue){
+			//function to change the data
+			var separators = ['\n\n', '\\\+', '/>\n','\n\n\n'];
+			var new_textarea = '';
+			//before pass by here
+			var piezes_submit = textareavalue.split(new RegExp(separators.join('|'), 'g'));
+			for (var i = 0; i < piezes_submit.length; i++) {
+				if(piezes_submit[i].indexOf('>')>-1){
+					//no pasa nada
+					new_textarea += piezes_submit[i] +'\n\n';
+				}else{
+					new_textarea += '<p class="temp_paragraph">'+piezes_submit[i]+'</p>\n\n';
+				}
+				 
+			}//closed for
+			return new_textarea;	
+		}
 
 		
 		changeorder = function($form){
 			$textarea = $("textarea#wpcf7-form").clone();
-			$textform = '<div>' + $textarea.text() + '</div>';
+			//changeEtiquete($textarea.text());
+			//$textform = '<div>' + $textarea.text() + '</div>';
+			$textform = '<div>' +changeEtiquete($textarea.text())+ '</div>';
 			var $fields = [];
 			var $styles_fields = [];
 			
@@ -122,7 +160,6 @@ function wpecf7vb_admin_head_scripts() {
 				if($j>=$styles_fields.length){
 					$form.find('.sortitem').each(function() {
 						$newfields[$newfields.length] = $fields[$(this).attr('data-order')];
-						
 						$newtextarea += $fields[$(this).attr('data-order')] + "\n\n";
 						$(this).attr('data-order',$i);
 						$i++;
@@ -130,7 +167,8 @@ function wpecf7vb_admin_head_scripts() {
 				}
 			}
 			function_add_field();
-			
+			//remover tags 
+			$newtextarea  = removetags($newtextarea);
 			//sincronized textarea and codemirror
 			$("textarea#wpcf7-form").text($newtextarea);
 			sincronized_textarea();
@@ -229,7 +267,7 @@ function wpecf7vb_admin_head_scripts() {
 			save_selection_theme(mytheme)
 		});
 
-		$('p.submit').on('click',function(){
+		/*$('p.submit').on('click',function(){
 			//function to change the data
 			var separators = ['\n\n', '\\\+', '>\n','\n\n\n'];
 			//before pass by here
@@ -250,7 +288,7 @@ function wpecf7vb_admin_head_scripts() {
 				 }
 			}
 			//ADD TO THE SHORTCODES A PARAGRAPH TO THIS WORK
-		});
+		});*/
 
 
 		 //refresh visual form
@@ -260,8 +298,10 @@ function wpecf7vb_admin_head_scripts() {
 			$("#wpecf7visualeditor").find("*").remove();
 
 			$("#wpecf7visualeditor").html('<div style="width:350px !important; height:150px !important; border:2px solid #ccc;"><center><p><i class="dashicons dashicons-image-rotate" style="font-size:80px; margin-top:20px;"></i></p><p>Refresh....</p></center></div>');
-	    	
-			$textform_temp = '<div>'+$("#wpcf7-form").val()+ '</div>';
+	 
+
+			$textform_temp = '<div>'+changeEtiquete($("#wpcf7-form").val())+ '</div>';
+			alert($textform_temp);
 			$mihtml = '';
 			//take the form to refresh the visual
 			$($textform_temp).find('>p,>label,>style,>script').each(function(i) {
