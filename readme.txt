@@ -56,10 +56,9 @@ You can either install it automatically from the WordPress admin, or do it manua
 == Changelog ==
 
 = 2.1 =
-* Improvement in the text editor when working with javascript and css: You can now change order like any field
-* Option to refresh the visual form
-
-
+* Improvement the text editor to works with js and css: You can now change order like any field.
+* Tweak, Option to refresh the visual form.
+* Tweak, by adding nonces to the AJAX requests.
 
 = 2.0 =
 Closest...
@@ -81,4 +80,4 @@ Added support for "p" and "label" html tags.  (Until now was just p)
 First approach to Visual Builder for forms from Contact Form 7.
 
 == Upgrade Notice ==
-2.0 Continues doing a better Visual Builder for forms from Contact Form 7.
+2.1 Continues doing a better Visual Builder for forms from Contact Form 7.
