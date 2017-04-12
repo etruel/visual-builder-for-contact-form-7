@@ -8,7 +8,7 @@ Author URI: http://www.netmdp.com
 License: GPLv2
 Text Domain: visual-builder-for-contact-form-7
 Domain Path: /lang/
-Version: 2.1
+Version: 2.0
 */
 
 /* 
@@ -101,22 +101,48 @@ function wpecf7vb_admin_head_scripts() {
 		    return target.split(search).join(replacement);
 		};
 
+
 		//Function grouping in text to move tags while CF7
 		function changeEtiquete(textareavalue){
 			//function to change the data
 			var separators = ['\n\n', '\\\+', '/>\n','\n\n\n'];
-			var new_textarea = '';
+			var new_textarea = textareavalue;
+			var elements_repeat = Array();
+			var cont_verdadero_elements = 0;
 			//before pass by here
 			var piezes_submit = textareavalue.split(new RegExp(separators.join('|'), 'g'));
 			for (var i = 0; i < piezes_submit.length; i++) {
-				if(piezes_submit[i].indexOf('>')>-1){
-					//no pasa nada
-					new_textarea += piezes_submit[i] +'\n\n';
-				}else{
-					new_textarea += '<p class="temp_paragraph">'+piezes_submit[i]+'</p>\n\n';
-				}
-				 
-			}//closed for
+				cont_verdadero_elements = 0;
+				 if(piezes_submit[i].indexOf('[submit') >-1){
+				 	//here to see if you have some HTML to be tag behind so not happened
+				 	if(piezes_submit[i].indexOf('>')>-1){
+				 		//no pasa nada
+				 	}else{
+				 		//delete the blank spaces that exist
+				 		//piezes_submit[i] = piezes_submit[i].replace('\n','');
+				 		//now save the positions and field on the array
+				 		//$("textarea#wpcf7-form").text($("textarea#wpcf7-form").text().replace(piezes_submit[i],'<p>'+piezes_submit[i]+'</p>'));
+				 		//sincronized_textarea();
+				 		//alert(piezes_submit[i]);
+				 		//hacemos un for para guardar los datos en el arreglo
+				 		for(var j = 0; j < elements_repeat.length; j++){
+				 			if(elements_repeat[j].indexOf(piezes_submit[i])>-1){
+				 				cont_verdadero_elements++;
+				 			}
+				 		}//cierre del for
+				 		//guardamos el valor
+				 		if(cont_verdadero_elements==0) elements_repeat.push(piezes_submit[i]);	
+				 	}//cierre del else
+				 }//cierre if
+			}//
+
+			//hacemos el for de los elementos obtenidos a reemplaza
+			for(k=0; k<elements_repeat.length; k++){
+				//alert("entro en el for "+elements_repeat[k]);
+				new_textarea = new_textarea.replaceAll(elements_repeat[k],"<p class='temp_paragraph'>"+elements_repeat[k]+"</p>");
+			}//cierre del form
+
+			//alert("este es el nuievo textarea "+new_textarea);
 			return new_textarea;	
 		}
 
@@ -126,6 +152,7 @@ function wpecf7vb_admin_head_scripts() {
 			//changeEtiquete($textarea.text());
 			//$textform = '<div>' + $textarea.text() + '</div>';
 			$textform = '<div>' +changeEtiquete($textarea.text())+ '</div>';
+			//alert("Esto es textform"+$textform);
 			var $fields = [];
 			var $styles_fields = [];
 			
@@ -140,8 +167,8 @@ function wpecf7vb_admin_head_scripts() {
 				}else if(myetiquete=='P' || myetiquete=='SCRIPT'){
 					$fields[$fields.length]=$(this).prop('outerHTML');
 				}else{
-					//$styles_fields[$styles_fields.length] = $(this).prop('outerHTML');
-					$fields[$fields.length]=$(this).prop('outerHTML');
+					$styles_fields[$styles_fields.length] = $(this).prop('outerHTML');
+					//$fields[$fields.length]=$(this).prop('outerHTML');
  					
  				}
 			});
@@ -301,22 +328,27 @@ function wpecf7vb_admin_head_scripts() {
 	 
 
 			$textform_temp = '<div>'+changeEtiquete($("#wpcf7-form").val())+ '</div>';
-			alert($textform_temp);
+			//alert($textform_temp);
 			$mihtml = '';
+			var inicial = 0;
 			//take the form to refresh the visual
 			$($textform_temp).find('>p,>label,>style,>script').each(function(i) {
 
 				myetiquete = $(this)[0].tagName;
 				if(myetiquete=='LABEL'){
-					$mihtml+= '<div class="sortitem" data-order="'+i+'"><span class="sorthandle" unselectable="on"></span><span unselectable="on" class="itemactions"><span class="itemdelete refresh-delete" style="position:absolute; top:0; margin-top-20px; right:0; padding-right:10px;">  </span></span><p>'+$(this).prop("outerHTML")+'</p></div>';
+					$mihtml+= '<div class="sortitem" data-order="'+inicial+'"><span class="sorthandle" unselectable="on"></span><span unselectable="on" class="itemactions"><span class="itemdelete refresh-delete" style="position:absolute; top:0; margin-top-20px; right:0; padding-right:10px;">  </span></span><p>'+$(this).prop("outerHTML")+'</p></div>';
+					inicial+=1;
 				}else if(myetiquete=='P'){
-					$mihtml+= '<div class="sortitem" data-order="'+i+'"><span class="sorthandle" unselectable="on"></span><span unselectable="on" class="itemactions"><span class="itemdelete refresh-delete" style="position:absolute; top:0; right:0; margin-top-20px; padding-right:10px;"> </span></span>'+$(this).prop("outerHTML")+'</div>';
-				}else{
-					$mihtml+= '<div class="sortitem" data-order="'+i+'"><span class="sorthandle" unselectable="on"></span><span unselectable="on" class="itemactions"><span class="itemdelete refresh-delete" style="position:absolute; top:0; right:0; margin-top-20px; padding-right:10px;"> </span></span><p>'+$(this).prop("outerHTML")+'</p></div>';
-
+					$mihtml+= '<div class="sortitem" data-order="'+inicial+'"><span class="sorthandle" unselectable="on"></span><span unselectable="on" class="itemactions"><span class="itemdelete refresh-delete" style="position:absolute; top:0; right:0; margin-top-20px; padding-right:10px;"> </span></span>'+$(this).prop("outerHTML")+'</div>';
+					inicial+=1;
+				}else if(myetiquete=='SCRIPT'){
+					$mihtml+= '<div class="sortitem" data-order="'+inicial+'"><span class="sorthandle" unselectable="on"></span><span unselectable="on" class="itemactions"><span class="itemdelete refresh-delete" style="position:absolute; top:0; right:0; margin-top-20px; padding-right:10px;"> </span></span><p>'+$(this).prop("outerHTML")+'</p></div>';
+					inicial+=1;
 				}
 
+
 			});
+		//	alert($mihtml);
 			//here call the ajax that we return the cooled form
 	   		fnrefresh_visual_form($mihtml);
 	    });
