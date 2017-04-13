@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: visual builder, form builder, visual form, contact, form, contact form, feedback, email, ajax, captcha, akismet, multilingual
 Requires at least: 4.1
 Tested up to: 4.7
-Stable tag: 2.0
+Stable tag: 2.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -56,7 +56,8 @@ You can either install it automatically from the WordPress admin, or do it manua
 == Changelog ==
 
 = 2.1 =
-* Improvement the text editor to works with js and css: You can now change order like any field.
+* Improvement the text editor to works with javascript. You can now change order like any field.
+* Improvement the text editor retain the css in the top of the form.
 * Tweak, Option to refresh the visual form.
 * Tweak, by adding nonces to the AJAX requests.
 
