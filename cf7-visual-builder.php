@@ -8,7 +8,7 @@ Author URI: http://www.netmdp.com
 License: GPLv2
 Text Domain: visual-builder-for-contact-form-7
 Domain Path: /lang/
-Version: 2.1
+Version: 2.2
 */
 
 /* 
@@ -452,13 +452,6 @@ function wpecf7vb_editor_panel_form($post) {
 	}
 ?>
 
-
-<?php 
-	
-	
-	
-?>
-
 <!--element-->
 <i style="float: right;" class="<?php print($class_iconeyes); ?>"></i>
 
@@ -467,7 +460,8 @@ function wpecf7vb_editor_panel_form($post) {
 	<?php // if($current_screen->id="toplevel_page_wpcf7" ) {} ?>
 	<div class="wpecf7editors">
 	<!--option to hide the element visual provided the post not be has saved yet-->
-	<?php if(!empty(get_post_status($_GET['post']))){ ?>	
+	<?php $posst = get_post_status($_GET['post']);	
+		 if(!empty( $posst )){ ?>	
 		<div style="<?php print($style_wpecf7vb_editor); ?>" class="wpecf7vb_col"   id="wpecf7visualeditor" data-callback="changeorder( jQuery('#wpecf7visualeditor') );">
 		<?php
 			//echo print_r($post->shortcode());

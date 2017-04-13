@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: visual builder, form builder, visual form, contact, form, contact form, feedback, email, ajax, captcha, akismet, multilingual
 Requires at least: 4.1
 Tested up to: 4.7
-Stable tag: 2.1
+Stable tag: 2.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -55,6 +55,9 @@ You can either install it automatically from the WordPress admin, or do it manua
 
 == Changelog ==
 
+= 2.2 =
+* Fixes a Fatal error: Can’t use function return value in write context in some versions of PHP.
+
 = 2.1 =
 * Improvement the text editor to works with javascript. You can now change order like any field.
 * Improvement the text editor retain the css in the top of the form.
@@ -81,4 +84,4 @@ Added support for "p" and "label" html tags.  (Until now was just p)
 First approach to Visual Builder for forms from Contact Form 7.
 
 == Upgrade Notice ==
-2.1 Continues doing a better Visual Builder for forms from Contact Form 7.
+2.2 Continues doing a better Visual Builder for forms from Contact Form 7.
