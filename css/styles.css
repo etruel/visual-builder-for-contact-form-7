@@ -22,6 +22,7 @@
 
 #wpecf7visualeditor {
    width: 40% !important;
+   display: inline-block;
    float: right !important;
  
 }
@@ -29,10 +30,10 @@
     padding-right: 10px;
 }
 #wpecf7textareaeditor {
-    width: 47% !important;
-    display: table;
+    width: 55% !important;
+    display: inline-block;
     float: left !important;
-    height: 500px !important;
+ 	height: auto;
 
 }
 .sortitem input[type='text'],.sortitem textarea,.sortitem input[type='email'],.sortitem input[type='number']{
@@ -40,5 +41,5 @@
 }
 
 /*style add codemirror*/
-.CodeMirror{width: 100% !important;max-width: 400px !important; height: 450px !important; overflow-x: auto; overflow-y: auto; word-wrap: break-word;}
+.CodeMirror{width: 100% !important; height: 450px !important; overflow-x: auto; overflow-y: auto; word-wrap: break-word;}
 #wpcf7-form{display: none !important;}
