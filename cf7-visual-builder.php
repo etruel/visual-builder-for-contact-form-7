@@ -69,19 +69,19 @@ function wpecf7vb_admin_head_scripts() {
 
 <script type="text/javascript" language="javascript">
 	jQuery(document).ready(function($){
-		var $_wpcf7_taggen_insert = _wpcf7.taggen.insert;
+		var $wpcf7_taggen_insert = wpcf7.taggen.insert;
 
 
-		_wpcf7.taggen.insert = function( content ) {
+		wpcf7.taggen.insert = function( content ) {
 			var content = "<p>"+content+"</p>";
 			insertTextAtCursor(content);
 			$("#wpcf7-form").text(get_codemirror());
-
-			$_wpcf7_taggen_insert.apply( this, arguments );
+			$wpcf7_taggen_insert.apply( this, arguments );
 
 //			$('#wpecf7visualeditor').html('<?php _e( 'Save to change order', 'visual-builder-for-contact-form-7' ); ?>').fadeIn();
 		};
-
+		//alert("jaqjaja ");
+		
 
 		//funcion para remover etiquetas creadas temporalmente a los shortcodes
 		function removetags($textarea_temp){
@@ -457,7 +457,7 @@ function wpecf7vb_editor_panel_form($post) {
 
 <i title="Refresh Visual Form" class="dashicons dashicons-image-rotate refresh-visual" style="float: right;margin-right: 275px; margin-top: 5px; cursor: pointer;"></i>
 <h3><?php echo __( 'Visual Form', 'wpecf7vb' ); ?></h3>
-	<?php // if($current_screen->id="toplevel_page_wpcf7" ) {} ?>
+	<?php // if($current_screen->id="toplevel_pagewpcf7" ) {} ?>
 	<div class="wpecf7editors">
 	<!--option to hide the element visual provided the post not be has saved yet-->
 	<?php $posst = get_post_status($_GET['post']);	
