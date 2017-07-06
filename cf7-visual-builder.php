@@ -69,9 +69,11 @@ function wpecf7vb_admin_head_scripts() {
 
 <script type="text/javascript" language="javascript">
 	jQuery(document).ready(function($){
+		//button selector novalidate html
+		jQuery("[name='wpcf7-save']" ).attr('formnovalidate','formnovalidate');
+
+
 		var $wpcf7_taggen_insert = wpcf7.taggen.insert;
-
-
 		wpcf7.taggen.insert = function( content ) {
 			var content = "<p>"+content+"</p>";
 			insertTextAtCursor(content);
