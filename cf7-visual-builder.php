@@ -285,6 +285,13 @@ function wpecf7vb_admin_head_scripts() {
 
 		$('.seeornot').click(function(){
 			$('.seeornot').toggleClass('seeornot dashicons dashicons-visibility').toggleClass('seeornot dashicons dashicons-hidden');
+
+			if($(this).hasClass("dashicons-hidden")){
+				$(".refresh-visual").hide(0);
+			}else{
+				$(".refresh-visual").show(0);
+			}
+
 			$('#wpecf7visualeditor').toggle();
 			iconeyes = $(this).attr("class");
 			save_icon_eyes(iconeyes);
@@ -455,9 +462,9 @@ function wpecf7vb_editor_panel_form($post) {
 ?>
 
 <!--element-->
-<i style="float: right;" class="<?php print($class_iconeyes); ?>"></i>
+<i style="float: right;" class="<?php print($class_iconeyes); ?>" id="icon_eyes"></i>
 
-<i title="Refresh Visual Form" class="dashicons dashicons-image-rotate refresh-visual" style="float: right;margin-right: 275px; margin-top: 5px; cursor: pointer;"></i>
+<i title="Refresh Visual Form" class="dashicons dashicons-image-rotate refresh-visual" style="float: right;margin-right: 275px; margin-top: 5px; cursor: pointer; <?php echo $style_wpecf7vb_editor; ?>"></i>
 <h3><?php echo __( 'Visual Form', 'wpecf7vb' ); ?></h3>
 	<?php // if($current_screen->id="toplevel_pagewpcf7" ) {} ?>
 	<div class="wpecf7editors">
