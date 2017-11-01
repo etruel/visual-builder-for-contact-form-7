@@ -329,11 +329,12 @@ function wpecf7vb_admin_head_scripts() {
 
 		 //refresh visual form
 	    $(".refresh-visual").click(function(){
+	    	var refesh_icon_url = "<?php echo get_bloginfo('wpurl').'/wp-admin/images/wpspin_light.gif';  ?>";
 	    	//We will first remove the data
 	    	$("#wpecf7visualeditor").css({'width':'400px !important','border':'2px solid #ccc'});
 			$("#wpecf7visualeditor").find("*").remove();
 
-			$("#wpecf7visualeditor").html('<div style="width:350px !important; height:150px !important; border:2px solid #ccc;"><center><p><i class="dashicons dashicons-image-rotate" style="font-size:80px; margin-top:20px;"></i></p><p>Refresh....</p></center></div>');
+			$("#wpecf7visualeditor").html('<div style="width:100% !important; height:150px !important; border:2px solid #ccc;"><center><p><img style="width:20px; height:20px; margin-top:30px;" src="'+refesh_icon_url+'"></i></p><p>Refresh....</p></center></div>');
 	 
 
 			$textform_temp = '<div>'+changeEtiquete($("#wpcf7-form").val())+ '</div>';
@@ -449,6 +450,8 @@ function WPe_Visual_CF7($panels	) {
 }
 
 function wpecf7vb_editor_panel_form($post) {
+	
+
 //	global $pagenow, $screen, $current_screen, $current_page;
 	$style_wpecf7vb_editor='';
 	$class_iconeyes="seeornot dashicons dashicons-visibility";
@@ -460,6 +463,7 @@ function wpecf7vb_editor_panel_form($post) {
 		$class_iconeyes = "seeornot dashicons dashicons-hidden";
 	}
 ?>
+
 
 <!--element-->
 <i style="float: right;" class="<?php print($class_iconeyes); ?>" id="icon_eyes"></i>
