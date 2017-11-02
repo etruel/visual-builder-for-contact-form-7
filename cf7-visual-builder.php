@@ -29,18 +29,29 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
+
+function wpecf7vb_load() {
+     if(!class_exists( 'WPCF7' ) ) {
+            //deactivate_plugins(plugin_basename( __FILE__ ));
+     	 require_once 'class.wpcf7vb-extension-activation.php';
+     	 $activation = new wpcf7_Extension_Activation( plugin_dir_path( __FILE__ ), basename( __FILE__ ) );
+         $activation = $activation->run();
+         deactivate_plugins(plugin_basename( __FILE__ ));
+    }else {
+     return wpecf7vb_init(); 
+    }
+}
+add_action( 'plugins_loaded', 'wpecf7vb_load', 999);
+
+function wpecf7vb_init(){
+
 define( 'wpecf7vb_PLUGIN', __FILE__ );
-
 add_action( 'admin_enqueue_scripts', 'wpecf7vb_admin_enqueue_scripts', 999 );
-
-
 function wpecf7vb_admin_enqueue_scripts( $hook_suffix ) {
 	if ( false === strpos( $hook_suffix, 'wpcf7' ) ) {
 		return;
 	}
-
 // wp_enqueue_script( $handle, $src = false, $deps = array(), $ver f= false, $in_footer = false ) 
-	
 	wp_enqueue_style( 'wpecf7vb-admin',	wpecf7vb_plugin_url( 'css/styles.css' ));
 	wp_enqueue_script( 'wpecf7vb-admin-vSort',	wpecf7vb_plugin_url( 'js/jquery.vSort.min.js' ), array( 'jquery', 'thickbox', 'wpcf7-admin' ) );
 	
@@ -339,28 +350,28 @@ function wpecf7vb_admin_head_scripts() {
 
 			$textform_temp = '<div>'+changeEtiquete($("#wpcf7-form").val())+ '</div>';
 			//alert($textform_temp);
-			$mihtml = '';
-			var inicial = 0;
+			$myhtml = '';
+			var initial = 0;
 			//take the form to refresh the visual
 			$($textform_temp).find('>p,>label,>style,>script').each(function(i) {
 
 				myetiquete = $(this)[0].tagName;
 				if(myetiquete=='LABEL'){
-					$mihtml+= '<div class="sortitem" data-order="'+inicial+'"><span class="sorthandle" unselectable="on"></span><span unselectable="on" class="itemactions"><span class="itemdelete refresh-delete" style="position:absolute; top:0; margin-top-20px; right:0; padding-right:10px;">  </span></span><p>'+$(this).prop("outerHTML")+'</p></div>';
-					inicial+=1;
+					$myhtml+= '<div class="sortitem" data-order="'+initial+'"><span class="sorthandle" unselectable="on"></span><span unselectable="on" class="itemactions"><span class="itemdelete refresh-delete" style="position:absolute; top:0; margin-top-20px; right:0; padding-right:10px;">  </span></span><p>'+$(this).prop("outerHTML")+'</p></div>';
+					initial+=1;
 				}else if(myetiquete=='P'){
-					$mihtml+= '<div class="sortitem" data-order="'+inicial+'"><span class="sorthandle" unselectable="on"></span><span unselectable="on" class="itemactions"><span class="itemdelete refresh-delete" style="position:absolute; top:0; right:0; margin-top-20px; padding-right:10px;"> </span></span>'+$(this).prop("outerHTML")+'</div>';
-					inicial+=1;
+					$myhtml+= '<div class="sortitem" data-order="'+initial+'"><span class="sorthandle" unselectable="on"></span><span unselectable="on" class="itemactions"><span class="itemdelete refresh-delete" style="position:absolute; top:0; right:0; margin-top-20px; padding-right:10px;"> </span></span>'+$(this).prop("outerHTML")+'</div>';
+					initial+=1;
 				}else if(myetiquete=='SCRIPT'){
-					$mihtml+= '<div class="sortitem" data-order="'+inicial+'"><span class="sorthandle" unselectable="on"></span><span unselectable="on" class="itemactions"><span class="itemdelete refresh-delete" style="position:absolute; top:0; right:0; margin-top-20px; padding-right:10px;"> </span></span><p>'+$(this).prop("outerHTML")+'</p></div>';
-					inicial+=1;
+					$myhtml+= '<div class="sortitem" data-order="'+initial+'"><span class="sorthandle" unselectable="on"></span><span unselectable="on" class="itemactions"><span class="itemdelete refresh-delete" style="position:absolute; top:0; right:0; margin-top-20px; padding-right:10px;"> </span></span><p>'+$(this).prop("outerHTML")+'</p></div>';
+					initial+=1;
 				}
 
 
 			});
-		//	alert($mihtml);
+		//	alert($myhtml);
 			//here call the ajax that we return the cooled form
-	   		fnrefresh_visual_form($mihtml);
+	   		fnrefresh_visual_form($myhtml);
 	    });
 
 
@@ -559,3 +570,6 @@ function refresh_visual_callback(){
 	wp_die();
 
 }
+
+}//closed init
+
