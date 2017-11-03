@@ -47,7 +47,7 @@ class wpcf7_Extension_Activation {
         if( isset( $plugins[$this->plugin_path . '/' . $this->plugin_file]['Name'] ) ) {
             $this->plugin_name = str_replace( 'Contact Form 7', '', $plugins[$this->plugin_path . '/' . $this->plugin_file]['Name'] );
         } else {
-            $this->plugin_name = __( 'This plugin', 'Contact Form 7' );
+            $this->plugin_name = __( 'This plugin', 'visual-builder-for-contact-form-7' );
         }
 
         // Is Contact Form 7 installed?
@@ -79,17 +79,17 @@ class wpcf7_Extension_Activation {
      *
      * @access      public
      * @since       1.0.0
-     * @return      string The notice to display
+     * @return      string The notice to displayS
      */
     public function missing_wpcf7_notice() {
         if( $this->has_wpcf7 ) {
             $url  = esc_url( wp_nonce_url( admin_url( 'plugins.php?action=activate&plugin=' . $this->wpcf7_base ), 'activate-plugin_' . $this->wpcf7_base ) );
-            $link = '<a href="' . $url . '">' . __( 'activate it', 'wpcf7-extension-activation' ) . '</a>';
+            $link = '<a href="' . $url . '">' . __( 'activate it', 'visual-builder-for-contact-form-7' ) . '</a>';
         } else {
             $url  = esc_url( wp_nonce_url( self_admin_url( 'update.php?action=install-plugin&plugin=wpcf7' ), 'install-plugin_wpcf7' ) );
-            $link = '<a href="' . $url . '">' . __( 'install it', 'wpcf7-extension-activation' ) . '</a>';
+            $link = '<a href="' . $url . '">' . __( 'install it', 'visual-builder-for-contact-form-7' ) . '</a>';
         }
         
-        echo '<div class="error"><p>' . $this->plugin_name . sprintf( __( ' requires Contact Form 7! Please %s to continue!', 'wpcf7-extension-activation' ), $link ) . '</p></div>';
+        echo '<div class="error"><p>' . $this->plugin_name . sprintf( __( ' requires Contact Form 7! Please %s to continue!', 'visual-builder-for-contact-form-7' ), $link ) . '</p></div>';
     }
 }

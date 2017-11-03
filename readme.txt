@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: visual builder, form builder, visual form, contact, form, contact form, feedback, email, ajax, captcha, akismet, multilingual
 Requires at least: 4.1
 Tested up to: 4.7
-Stable tag: 2.2
+Stable tag: 2.3.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -85,3 +85,9 @@ First approach to Visual Builder for forms from Contact Form 7.
 
 == Upgrade Notice ==
 2.2 Continues doing a better Visual Builder for forms from Contact Form 7.
+
+=2.3.1 =
+
+* I have added the reload gif that owns wordpress when refreshing the form.
+* Fixed the functionality of the form viewer hiding the reload form.
+* Added the visual extension activation based on the same activation file of the add-ons of wpematico for greater security.

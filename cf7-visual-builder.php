@@ -8,7 +8,7 @@ Author URI: http://www.netmdp.com
 License: GPLv2
 Text Domain: visual-builder-for-contact-form-7
 Domain Path: /lang/
-Version: 2.2
+Version: 2.3.1
 */
 
 /* 
@@ -452,7 +452,7 @@ add_filter('wpcf7_editor_panels', 'WPe_Visual_CF7');
 function WPe_Visual_CF7($panels	) {
 	//$visualform['visualform-panel'] = array(
 	$panels['form-panel'] = array(
-			'title' => __( 'Visual Form', 'contact-form-7' ),
+			'title' => __( 'Visual Form', 'visual-builder-for-contact-form-7' ),
 			'callback' => 'wpecf7vb_editor_panel_form' );
 	
 	//$panels = array_merge($visualform, $panels);
@@ -480,7 +480,7 @@ function wpecf7vb_editor_panel_form($post) {
 <i style="float: right;" class="<?php print($class_iconeyes); ?>" id="icon_eyes"></i>
 
 <i title="Refresh Visual Form" class="dashicons dashicons-image-rotate refresh-visual" style="float: right;margin-right: 275px; margin-top: 5px; cursor: pointer; <?php echo $style_wpecf7vb_editor; ?>"></i>
-<h3><?php echo __( 'Visual Form', 'wpecf7vb' ); ?></h3>
+<h3><?php echo __( 'Visual Form', 'visual-builder-for-contact-form-7' ); ?></h3>
 	<?php // if($current_screen->id="toplevel_pagewpcf7" ) {} ?>
 	<div class="wpecf7editors">
 	<!--option to hide the element visual provided the post not be has saved yet-->
