@@ -8,7 +8,7 @@ Author URI: http://www.netmdp.com
 License: GPLv2
 Text Domain: visual-builder-for-contact-form-7
 Domain Path: /lang/
-Version: 2.3.1
+Version: 2.3
 */
 
 /* 
@@ -212,7 +212,7 @@ function wpecf7vb_admin_head_scripts() {
 			//sincronized textarea and codemirror
 			$("textarea#wpcf7-form").text($newtextarea);
 			sincronized_textarea();
-			sincronized_textarea2($("#wpcf7-form").text());
+			sincronized_codemirror_to_textarea($("#wpcf7-form").text());
 
 		};
 		
@@ -244,7 +244,8 @@ function wpecf7vb_admin_head_scripts() {
 			});
 
 			if($(this).hasClass('refresh-delete')){
-				sincronized_textarea2($("#wpcf7-form").text());
+				sincronized_textarea_to_codemirror($("#wpcf7-form").text());
+				sincronized_codemirror_to_textarea($("#wpcf7-form").text());
 			}
 
 		});
@@ -408,7 +409,7 @@ function wp_visual_script_footer(){  ?>
        	document.getElementById("wpcf7-form").value = text;
     }
     //polimorfismo
-    function sincronized_codemirror2(text){
+    function sincronized_textarea_to_codemirror(text){
 
     	document.getElementById("wpcf7-form").value = text;
     }
@@ -419,7 +420,7 @@ function wp_visual_script_footer(){  ?>
     	text = document.getElementById("wpcf7-form").value;
     	editor.setValue(text);
     }
-    function sincronized_textarea2(text){
+    function sincronized_codemirror_to_textarea(text){
     	editor.setValue(text);
     }
       
