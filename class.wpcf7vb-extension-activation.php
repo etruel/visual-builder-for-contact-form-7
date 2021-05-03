@@ -45,7 +45,7 @@ class wpcf7_Extension_Activation {
 
         // Set plugin name
         if( isset( $plugins[$this->plugin_path . '/' . $this->plugin_file]['Name'] ) ) {
-            $this->plugin_name = str_replace( 'Contact Form 7', '', $plugins[$this->plugin_path . '/' . $this->plugin_file]['Name'] );
+            $this->plugin_name = str_replace( 'for Contact Form 7', '', $plugins[$this->plugin_path . '/' . $this->plugin_file]['Name'] );
         } else {
             $this->plugin_name = __( 'This plugin', 'visual-builder-for-contact-form-7' );
         }
@@ -90,6 +90,6 @@ class wpcf7_Extension_Activation {
             $link = '<a href="' . $url . '">' . __( 'install it', 'visual-builder-for-contact-form-7' ) . '</a>';
         }
         
-        echo '<div class="error"><p>' . $this->plugin_name . sprintf( __( ' requires Contact Form 7! Please %s to continue!', 'visual-builder-for-contact-form-7' ), $link ) . '</p></div>';
+        echo '<div class="error"><p>' . $this->plugin_name . sprintf( __( ' requires Contact Form 7! Please %s first and then activate this.', 'visual-builder-for-contact-form-7' ), $link ) . '</p></div>';
     }
 }

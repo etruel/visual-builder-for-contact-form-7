@@ -1,10 +1,10 @@
 === Visual Builder for Contact Form 7 ===
-Contributors: etruel,albertdesinger
+Contributors: etruel
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GT3UVS8UCAHV8
 Tags: visual builder, form builder, visual form, contact, form, contact form, feedback, email, ajax, captcha, akismet, multilingual
 Requires at least: 4.1
-Tested up to: 4.7
-Stable tag: 2.3
+Tested up to: 5.7.1
+Stable tag: 2.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -55,15 +55,19 @@ You can either install it automatically from the WordPress admin, or do it manua
 
 == Changelog ==
 
-=2.3 =
+= 2.4 May 2, 2021 =
+* Compatibility with Contact Form 7 v5.4.1 and WordPress v5.7.1
+* Adds requirements on activating to avoid errors if CF7 is not present.
+* Tweak uses the WordPress wheel gif for reload when refreshing the form.
+* Fixes the functionality of the form viewer hiding the reload form.
+* Fixes bug when refreshing the form and deleting an item.
+* Fixes failure to execute script elements in visual form.
+* Fixes javascript errors on contact forms list.
+* Fixes javascript errors for cm.theme.options on editing form screen.
 
-* I have added the reload gif that owns wordpress when refreshing the form.
-* Fixed the functionality of the form viewer hiding the reload form.
-* Added the visual extension activation based on the same activation file of the add-ons of wpematico for greater security.
-* Fixed bug when refreshing the form and deleting an item
-* Fixed failure to execute script elements in visual form
-
-
+= 2.3 =
+* Compatibility with Contact Form 7 v4.8 and Wordpress v4.8. 
+* Few tweaks on design and cosmetic.
 
 = 2.2 =
 * Fixes a Fatal error: Can’t use function return value in write context in some versions of PHP.
@@ -94,5 +98,5 @@ Added support for "p" and "label" html tags.  (Until now was just p)
 First approach to Visual Builder for forms from Contact Form 7.
 
 == Upgrade Notice ==
-2.2 Continues doing a better Visual Builder for forms from Contact Form 7.
+2.4 Continues doing a better Visual Builder for forms from Contact Form 7.
 
