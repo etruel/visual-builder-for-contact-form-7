@@ -498,7 +498,6 @@ function wpecf7vb_init() {
 			<!--option to hide the element visual provided the post not be has saved yet-->
 			<?php
 			$posst = get_post_status($_GET['post']);
-                        //var_dump($posst);
 			if (!empty($posst)) {
 				?>	
 				<div style="<?php print($style_wpecf7vb_editor); ?>" class="wpecf7vb_col"   id="wpecf7visualeditor" data-callback="changeorder( jQuery('#wpecf7visualeditor') );">
