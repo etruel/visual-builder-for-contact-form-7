@@ -30,13 +30,19 @@
     padding-right: 10px;
 }
 #wpecf7textareaeditor {
-    width: 55% !important;
+    width: 52% !important;
     display: inline-block;
     float: left !important;
  	height: auto;
 
 }
-.sortitem input[type='text'],.sortitem textarea,.sortitem input[type='email'],.sortitem input[type='number']{
+select#themes-selection-editor{
+    margin: 0 auto;
+    width: 108px;
+    display: block;
+    margin-top: 10px;    
+}
+.sortitem input[type='text'],.sortitem textarea,.sortitem input[type='email'],.sortitem input[type='number'], .sortitem input[type='url']{
 	width: 90% !important;
 }
 
