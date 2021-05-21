@@ -70,7 +70,7 @@ function wpecf7vb_init() {
 		wp_enqueue_script('wpecf7vb-htmlmixed', wpecf7vb_plugin_url('codemirror/js/htmlmixed.js'), array('wpecf7vb-mirrorcode', 'wpecf7vb-xml'));
 
 		//Added here to call it just on cf7 settings page
-		if (isset($_GET['action']) && $_GET['action']=='edit') {
+		if ( (isset($_GET['action']) && $_GET['action']=='edit') || (isset($_GET['page']) && $_GET['page'] =='wpcf7' )) {
 			add_action('admin_head', 'wpecf7vb_admin_head_scripts');
 			add_action('admin_footer', 'wp_visual_script_footer');
 		}
