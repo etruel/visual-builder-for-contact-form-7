@@ -35,7 +35,9 @@
   color: #999;
   white-space: nowrap;
 }
-
+pre.CodeMirror-line > span{
+    padding-left: 32px;
+}
 .CodeMirror-guttermarker { color: black; }
 .CodeMirror-guttermarker-subtle { color: #999; }
 
