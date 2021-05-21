@@ -313,7 +313,7 @@ function wpecf7vb_init() {
 					if (iconeyes == 'seeornot dashicons dashicons-hidden') {
 						$('#wpecf7textareaeditor').attr('style', 'width: 99% !important;');
 					} else {
-						$('#wpecf7textareaeditor').attr('style', 'width: 55% !important;');
+						$('#wpecf7textareaeditor').attr('style', 'width: 52% !important;');
 					}
 
 					save_icon_eyes(iconeyes);
