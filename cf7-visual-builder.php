@@ -70,7 +70,10 @@ function wpecf7vb_init() {
 		wp_enqueue_script('wpecf7vb-htmlmixed', wpecf7vb_plugin_url('codemirror/js/htmlmixed.js'), array('wpecf7vb-mirrorcode', 'wpecf7vb-xml'));
 
 		//Added here to call it just on cf7 settings page
-		if ( (isset($_GET['action']) && $_GET['action']=='edit') || (isset($_GET['page']) && $_GET['page'] =='wpcf7' )) {
+		if ( (isset($_GET['action']) && $_GET['action']=='edit')
+                        || (isset($_GET['page']) && $_GET['page'] =='wpcf7-new' )
+                        || (isset($_GET['page']) && $_GET['page'] =='wpcf7' )
+                        ) {
 			add_action('admin_head', 'wpecf7vb_admin_head_scripts');
 			add_action('admin_footer', 'wp_visual_script_footer');
 		}
@@ -497,7 +500,8 @@ function wpecf7vb_init() {
 		<div class="wpecf7editors">
 			<!--option to hide the element visual provided the post not be has saved yet-->
 			<?php
-			$posst = get_post_status($_GET['post']);
+                        if( isset($_GET['post']) )
+                            $posst = get_post_status($_GET['post']);
 			if (!empty($posst)) {
 				?>	
 				<div style="<?php print($style_wpecf7vb_editor); ?>" class="wpecf7vb_col"   id="wpecf7visualeditor" data-callback="changeorder( jQuery('#wpecf7visualeditor') );">
