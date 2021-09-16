@@ -7,7 +7,7 @@
   Author URI: https://etruel.com
   License: GPLv2
   Text Domain: visual-builder-for-contact-form-7
-  Domain Path: /lang/
+  Domain Path: /languages/
   Version: 2.5
  */
 
@@ -30,6 +30,8 @@
  */
 
 function wpecf7vb_load() {
+	load_plugin_textdomain('visual-builder-for-contact-form-7', false, 'visual-builder-for-contact-form-7/languages');
+
 	if (!class_exists('WPCF7')) {
 		//deactivate_plugins(plugin_basename( __FILE__ ));
 		require_once 'class.wpcf7vb-extension-activation.php';

@@ -60,6 +60,7 @@ You can either install it automatically from the WordPress admin, or do it manua
 * Tested with WP 5.8.1 and CF7 5.4.2
 * New icons and logo :D 
 * Tweaks some styes.
+* Added .pot catalog and Spanish language files.
 * Fixes issue does not show form or visual builder on New Form.
 * Updated Author name and URIs.
 
