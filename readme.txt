@@ -3,8 +3,9 @@ Contributors: etruel
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GT3UVS8UCAHV8
 Tags: visual builder, form builder, visual form, contact, form, contact form, feedback, email, ajax, captcha, akismet, multilingual
 Requires at least: 4.1
-Tested up to: 5.7.1
-Stable tag: 2.4
+Tested up to: 5.8.1
+Requires PHP: 5.6
+Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -55,6 +56,13 @@ You can either install it automatically from the WordPress admin, or do it manua
 
 == Changelog ==
 
+= 2.5 Sep 16, 2021 =
+* Tested with WP 5.8.1 and CF7 5.4.2
+* New icons and logo :D 
+* Tweaks some styes.
+* Fixes issue does not show form or visual builder on New Form.
+* Updated Author name and URIs.
+
 = 2.4 May 2, 2021 =
 * Compatibility with Contact Form 7 v5.4.1 and WordPress v5.7.1
 * Adds requirements on activating to avoid errors if CF7 is not present.
@@ -98,5 +106,5 @@ Added support for "p" and "label" html tags.  (Until now was just p)
 First approach to Visual Builder for forms from Contact Form 7.
 
 == Upgrade Notice ==
-2.4 Continues doing a better Visual Builder for forms from Contact Form 7.
+2.5 Bumps to WP 5.8.1.
 

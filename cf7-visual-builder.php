@@ -1,14 +1,14 @@
 <?php
 /*
   Plugin Name: Visual Builder for Contact Form 7
-  Plugin URI: http://etruel.com/
+  Plugin URI: https://etruel.com/downloads/visual-builder-contact-form-7/
   Description: Adds a Visual Builder for contact form 7 forms.  ADD-on.  Requires Contact Form 7 Plugin.
-  Author: Esteban Truelsegaard
-  Author URI: http://www.netmdp.com
+  Author: Etruel Developments LLC
+  Author URI: https://etruel.com
   License: GPLv2
   Text Domain: visual-builder-for-contact-form-7
   Domain Path: /lang/
-  Version: 2.4
+  Version: 2.5
  */
 
 /*
