@@ -236,7 +236,7 @@ function wpecf7vb_init() {
 				var $i = 0;
 				$('#wpecf7visualeditor p').each(function () {
 
-					$(this).prop('outerHTML', '<div class="sortitem" data-order="' + $i + '"><span class="sorthandle"> </span><span unselectable="on" class="itemactions"><span class="itemdelete"> </span></span>' + $(this).prop('outerHTML') + '</div>');
+					$(this).prop('outerHTML', '<div class="sortitem" data-order="' + $i + '"><span class="sorthandle"> </span><span unselectable="on" class="itemactions"><span class="itemedit"> </span> <span class="itemdelete"> </span></span>' + $(this).prop('outerHTML') + '</div>');
 					$i++;
 				});
 				$('#wpecf7visualeditor').vSort();
@@ -259,6 +259,103 @@ function wpecf7vb_init() {
 
 				});
 
+				$(document).on("click", '.itemedit', function() {
+					
+					var key = $(this).parent().siblings().find('[class^="wpcf7-"]').children();
+					
+					editable_name = key.removeClass(['wpcf7-form-control', 'wpcf7-validates-as-required', 'wpcf7-validates-as-email']).attr('class');
+					var group_div = $(this).parent().siblings().find('[class^="wpcf7-"]');
+					
+					var index = editable_name.indexOf('wpcf7-email')
+
+					if(index >= 0) {
+						editable_name = 'wpcf7-email';
+					}
+
+					get_popup_trigger_link(editable_name.replace('wpcf7-', ''));
+					//replace_popup(attributes,editable_template);
+					
+				});
+
+				function replace_popup(attr, shortcode) {
+					var popup = jQuery("#TB_ajaxContent .tag-generator-panel");
+
+					popup.find(".submitbox").html('').append("<button class='button button-primary cf7b-updat-tag'>Update Tag</button>");
+
+					form_element = '';
+						jQuery.each(attr, function(index, value) {
+						var selector = (index == 'akismet') ? "[name^='"+index+"']" : "[name='"+index+"']";
+						form_element = popup.find(selector);
+						if( form_element.attr('type') == 'checkbox' && value == 'true') {
+							form_element.prop('checked',true).val('on');
+						} else {
+							popup.find("[name='"+index+"']").val(value.replaceAll('"',''));
+							if(index == 'name') {
+							popup.find("span.mail-tag").text(value);
+							}
+						}
+						});
+
+					popup.find(".insert-box input[type=text]").val(shortcode);
+					popup.find(".insert-tag").val("Update Tag").addClass('cf7b-update-tag').removeClass('insert-tag');
+				}
+
+					/* Find a with href and trigger click acti0n */
+				function get_popup_trigger_link( type ) {
+					console.log(type);
+					//return false;
+					link = '';
+					switch( type ) {
+						case 'text':
+						link = 'inlineId=tag-generator-panel-text';
+						break;
+						case 'email':
+						link = 'inlineId=tag-generator-panel-email';
+						break;
+						case 'url':
+						link = 'inlineId=tag-generator-panel-url';
+						break;
+						case 'tel':
+						link = 'inlineId=tag-generator-panel-tel';
+						break;
+						case 'number':
+						link = 'inlineId=tag-generator-panel-number';
+						break;
+						case 'range':
+						link = 'inlineId=tag-generator-panel-number';
+						break;
+						case 'date':
+						link = 'inlineId=tag-generator-panel-date';
+						break;
+						case 'textarea':
+						link = 'inlineId=tag-generator-panel-textarea';
+						break;
+						case 'select':
+						link = 'inlineId=tag-generator-panel-menu';
+						break;
+						case 'checkbox':
+						link = 'inlineId=tag-generator-panel-checkbox';
+						break;
+						case 'radio':
+						link = 'inlineId=tag-generator-panel-radio';
+						break;
+						case 'acceptance':
+						link = 'inlineId=tag-generator-panel-acceptance';
+						break;
+						case 'quiz':
+						link = 'inlineId=tag-generator-panel-quiz';
+						break;
+						case 'file':
+						link = 'inlineId=tag-generator-panel-file';
+						break;
+						case 'submit':
+						link = 'inlineId=tag-generator-panel-submit';
+						break;
+					}
+
+					var href=link;
+					jQuery(document).find("[href*='"+href+"']").click();
+					}
 
 				//creating ajax function iconeyes
 				function save_icon_eyes(iconeyes) {
@@ -373,13 +470,13 @@ function wpecf7vb_init() {
 
 						myetiquete = $(this)[0].tagName;
 						if (myetiquete == 'LABEL') {
-							$myhtml += '<div class="sortitem" data-order="' + initial + '"><span class="sorthandle" unselectable="on"></span><span unselectable="on" class="itemactions"><span class="itemdelete refresh-delete" style="position:absolute; top:0; margin-top-20px; right:0; padding-right:10px;">  </span></span><p>' + $(this).prop("outerHTML") + '</p></div>';
+							$myhtml += '<div class="sortitem" data-order="' + initial + '"><span class="sorthandle" unselectable="on"></span><span unselectable="on" class="itemactions"><span class="itemedit"> </span><span class="itemdelete refresh-delete" style="position:absolute; top:0; margin-top-20px; right:0; padding-right:10px;">  </span></span><p>' + $(this).prop("outerHTML") + '</p></div>';
 							initial += 1;
 						} else if (myetiquete == 'P') {
-							$myhtml += '<div class="sortitem" data-order="' + initial + '"><span class="sorthandle" unselectable="on"></span><span unselectable="on" class="itemactions"><span class="itemdelete refresh-delete" style="position:absolute; top:0; right:0; margin-top-20px; padding-right:10px;"> </span></span>' + $(this).prop("outerHTML") + '</div>';
+							$myhtml += '<div class="sortitem" data-order="' + initial + '"><span class="sorthandle" unselectable="on"></span><span unselectable="on" class="itemactions"><span class="itemedit"> </span><span class="itemdelete refresh-delete" style="position:absolute; top:0; right:0; margin-top-20px; padding-right:10px;"> </span></span>' + $(this).prop("outerHTML") + '</div>';
 							initial += 1;
 						} else if (myetiquete == 'SCRIPT') {
-							$myhtml += '<div class="sortitem" data-order="' + initial + '"><span class="sorthandle" unselectable="on"></span><span unselectable="on" class="itemactions"><span class="itemdelete refresh-delete" style="position:absolute; top:0; right:0; margin-top-20px; padding-right:10px;"> </span></span><p>' + $(this).prop("outerHTML") + '</p></div>';
+							$myhtml += '<div class="sortitem" data-order="' + initial + '"><span class="sorthandle" unselectable="on"></span><span unselectable="on" class="itemactions"><span class="itemedit"> </span><span class="itemdelete refresh-delete" style="position:absolute; top:0; right:0; margin-top-20px; padding-right:10px;"> </span></span><p>' + $(this).prop("outerHTML") + '</p></div>';
 							initial += 1;
 						}
 
