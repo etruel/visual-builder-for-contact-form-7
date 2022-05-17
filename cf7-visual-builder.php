@@ -8,7 +8,7 @@
   License: GPLv2
   Text Domain: visual-builder-for-contact-form-7
   Domain Path: /languages/
-  Version: 2.5
+  Version: 2.6
  */
 
 /*
@@ -35,8 +35,8 @@ function wpecf7vb_load() {
 	if (!class_exists('WPCF7')) {
 		//deactivate_plugins(plugin_basename( __FILE__ ));
 		require_once 'class.wpcf7vb-extension-activation.php';
-		$activation = new wpcf7_Extension_Activation(plugin_dir_path(__FILE__), basename(__FILE__));
-		$activation = $activation->run();
+		$activation	 = new wpcf7_Extension_Activation(plugin_dir_path(__FILE__), basename(__FILE__));
+		$activation	 = $activation->run();
 		deactivate_plugins(plugin_basename(__FILE__));
 	} else {
 		return wpecf7vb_init();
@@ -72,10 +72,8 @@ function wpecf7vb_init() {
 		wp_enqueue_script('wpecf7vb-htmlmixed', wpecf7vb_plugin_url('codemirror/js/htmlmixed.js'), array('wpecf7vb-mirrorcode', 'wpecf7vb-xml'));
 
 		//Added here to call it just on cf7 settings page
-		if ( (isset($_GET['action']) && $_GET['action']=='edit')
-                        || (isset($_GET['page']) && $_GET['page'] =='wpcf7-new' )
-                        || (isset($_GET['page']) && $_GET['page'] =='wpcf7' )
-                        ) {
+		if ((isset($_GET['action']) && $_GET['action'] == 'edit') || (isset($_GET['page']) && $_GET['page'] == 'wpcf7-new' ) || (isset($_GET['page']) && $_GET['page'] == 'wpcf7' )
+		) {
 			add_action('admin_head', 'wpecf7vb_admin_head_scripts');
 			add_action('admin_footer', 'wp_visual_script_footer');
 		}
@@ -259,103 +257,120 @@ function wpecf7vb_init() {
 
 				});
 
-				$(document).on("click", '.itemedit', function() {
-					
+				$(document).on("click", '.itemedit', function () {
+
 					var key = $(this).parent().siblings().find('[class^="wpcf7-"]').children();
-					
+
 					editable_name = key.removeClass(['wpcf7-form-control', 'wpcf7-validates-as-required', 'wpcf7-validates-as-email']).attr('class');
-					var group_div = $(this).parent().siblings().find('[class^="wpcf7-"]');
-					
+					var $node = $(this).parent().siblings().find('[class^="wpcf7-"]');
+
 					var index = editable_name.indexOf('wpcf7-email')
 
-					if(index >= 0) {
+					if (index >= 0) {
 						editable_name = 'wpcf7-email';
 					}
 
-					get_popup_trigger_link(editable_name.replace('wpcf7-', ''));
-					//replace_popup(attributes,editable_template);
-					
+					$type = editable_name.replace('wpcf7-', '');
+
+					get_popup_trigger_link($type);
+
+					//replace_values_popup($node[1].attributes,editable_template);
+					replace_values_popup(getAttributes($node));
+
 				});
 
-				function replace_popup(attr, shortcode) {
+
+				function getAttributes($node) {
+					var attrs = {};
+					$.each($node[1].attributes, function (index, attribute) {
+						name = attribute.name;
+						name.replace('aria-', '');
+						attrs[name] = attribute.value;
+					});
+
+					return attrs;
+				}
+
+				//function replace_values_popup(attr, shortcode) {
+				function replace_values_popup(attr) {
 					var popup = jQuery("#TB_ajaxContent .tag-generator-panel");
 
 					popup.find(".submitbox").html('').append("<button class='button button-primary cf7b-updat-tag'>Update Tag</button>");
 
 					form_element = '';
-						jQuery.each(attr, function(index, value) {
-						var selector = (index == 'akismet') ? "[name^='"+index+"']" : "[name='"+index+"']";
+					jQuery.each(attr, function (index, value) {
+						var selector = (index == 'akismet') ? "[name^='" + index + "']" : "[name='" + index + "']";
 						form_element = popup.find(selector);
-						if( form_element.attr('type') == 'checkbox' && value == 'true') {
-							form_element.prop('checked',true).val('on');
+						if (form_element.attr('type') == 'checkbox' && value == 'true') {
+							form_element.prop('checked', true).val('on');
 						} else {
-							popup.find("[name='"+index+"']").val(value.replaceAll('"',''));
-							if(index == 'name') {
-							popup.find("span.mail-tag").text(value);
+							popup.find("[name='" + index + "']").val(value.replaceAll('"', ''));
+							if (index == 'name') {
+								popup.find("span.mail-tag").text(value);
 							}
 						}
-						});
+					});
 
-					popup.find(".insert-box input[type=text]").val(shortcode);
+					//popup.find(".insert-box input[type=text]").val(shortcode);
 					popup.find(".insert-tag").val("Update Tag").addClass('cf7b-update-tag').removeClass('insert-tag');
 				}
 
-					/* Find a with href and trigger click acti0n */
-				function get_popup_trigger_link( type ) {
-					console.log(type);
-					//return false;
+				/* Find a with href and trigger click acti0n */
+				function get_popup_trigger_link(type) {
+					//console.log(type);
+
 					link = '';
-					switch( type ) {
+					switch (type) {
 						case 'text':
-						link = 'inlineId=tag-generator-panel-text';
-						break;
+							link = 'inlineId=tag-generator-panel-text';
+							break;
 						case 'email':
-						link = 'inlineId=tag-generator-panel-email';
-						break;
+							link = 'inlineId=tag-generator-panel-email';
+							break;
 						case 'url':
-						link = 'inlineId=tag-generator-panel-url';
-						break;
+							link = 'inlineId=tag-generator-panel-url';
+							break;
 						case 'tel':
-						link = 'inlineId=tag-generator-panel-tel';
-						break;
+							link = 'inlineId=tag-generator-panel-tel';
+							break;
 						case 'number':
-						link = 'inlineId=tag-generator-panel-number';
-						break;
+							link = 'inlineId=tag-generator-panel-number';
+							break;
 						case 'range':
-						link = 'inlineId=tag-generator-panel-number';
-						break;
+							link = 'inlineId=tag-generator-panel-number';
+							break;
 						case 'date':
-						link = 'inlineId=tag-generator-panel-date';
-						break;
+							link = 'inlineId=tag-generator-panel-date';
+							break;
 						case 'textarea':
-						link = 'inlineId=tag-generator-panel-textarea';
-						break;
+							link = 'inlineId=tag-generator-panel-textarea';
+							break;
 						case 'select':
-						link = 'inlineId=tag-generator-panel-menu';
-						break;
+							link = 'inlineId=tag-generator-panel-menu';
+							break;
 						case 'checkbox':
-						link = 'inlineId=tag-generator-panel-checkbox';
-						break;
+							link = 'inlineId=tag-generator-panel-checkbox';
+							break;
 						case 'radio':
-						link = 'inlineId=tag-generator-panel-radio';
-						break;
+							link = 'inlineId=tag-generator-panel-radio';
+							break;
 						case 'acceptance':
-						link = 'inlineId=tag-generator-panel-acceptance';
-						break;
+							link = 'inlineId=tag-generator-panel-acceptance';
+							break;
 						case 'quiz':
-						link = 'inlineId=tag-generator-panel-quiz';
-						break;
+							link = 'inlineId=tag-generator-panel-quiz';
+							break;
 						case 'file':
-						link = 'inlineId=tag-generator-panel-file';
-						break;
+							link = 'inlineId=tag-generator-panel-file';
+							break;
 						case 'submit':
-						link = 'inlineId=tag-generator-panel-submit';
-						break;
+							link = 'inlineId=tag-generator-panel-submit';
+							break;
 					}
 
-					var href=link;
-					jQuery(document).find("[href*='"+href+"']").click();
-					}
+					var href = link;
+					jQuery(document).find("[href*='" + href + "']").click();
+				}
 
 				//creating ajax function iconeyes
 				function save_icon_eyes(iconeyes) {
@@ -566,8 +581,8 @@ function wpecf7vb_init() {
 	function WPe_Visual_CF7($panels) {
 		//$visualform['visualform-panel'] = array(
 		$panels['form-panel'] = array(
-			'title' => __('Visual Form', 'visual-builder-for-contact-form-7'),
-			'callback' => 'wpecf7vb_editor_panel_form');
+			'title'		 => __('Visual Form', 'visual-builder-for-contact-form-7'),
+			'callback'	 => 'wpecf7vb_editor_panel_form');
 
 		//$panels = array_merge($visualform, $panels);
 
@@ -578,14 +593,14 @@ function wpecf7vb_init() {
 
 
 //	global $pagenow, $screen, $current_screen, $current_page;
-		$style_wpecf7vb_editor = '';
-		$class_iconeyes = "seeornot dashicons dashicons-visibility";
+		$style_wpecf7vb_editor	 = '';
+		$class_iconeyes			 = "seeornot dashicons dashicons-visibility";
 //	if(get_option("icon_eyes_status")=="seeornot dashicons dashicons-visibility"){
 		//$style_wpecf7vb_editor = "display:block";
 //	}else if(get_option("icon_eyes_status")=="seeornot dashicons dashicons-hidden"){
 		if (strpos(get_option("icon_eyes_status"), 'hidden') !== false) {
-			$style_wpecf7vb_editor = "display:none";
-			$class_iconeyes = "seeornot dashicons dashicons-hidden";
+			$style_wpecf7vb_editor	 = "display:none";
+			$class_iconeyes			 = "seeornot dashicons dashicons-hidden";
 		}
 		?>
 
@@ -595,12 +610,12 @@ function wpecf7vb_init() {
 
 		<i title="Refresh Visual Form" class="dashicons dashicons-image-rotate refresh-visual" style="float: right;margin-right: 275px; margin-top: 5px; cursor: pointer; <?php echo $style_wpecf7vb_editor; ?>"></i>
 		<h3><?php echo __('Visual Form', 'visual-builder-for-contact-form-7'); ?></h3>
-		<?php // if($current_screen->id="toplevel_pagewpcf7" ) {}  ?>
+		<?php // if($current_screen->id="toplevel_pagewpcf7" ) {}   ?>
 		<div class="wpecf7editors">
 			<!--option to hide the element visual provided the post not be has saved yet-->
 			<?php
-                        if( isset($_GET['post']) )
-                            $posst = get_post_status($_GET['post']);
+			if (isset($_GET['post']))
+				$posst = get_post_status($_GET['post']);
 			if (!empty($posst)) {
 				?>	
 				<div style="<?php print($style_wpecf7vb_editor); ?>" class="wpecf7vb_col"   id="wpecf7visualeditor" data-callback="changeorder( jQuery('#wpecf7visualeditor') );">
@@ -610,10 +625,10 @@ function wpecf7vb_init() {
 					//echo wpcf7_replace_all_form_tags('<p>Mensaje[textarea your-message]</p><p>[submit "Enviar2"]</p>');
 					?>
 				</div>
-				<?php } ?>
+			<?php } ?>
 			<div class="wpecf7vb_col" id="wpecf7textareaeditor">
 				<?php
-				$tag_generator = WPCF7_TagGenerator::get_instance();
+				$tag_generator	 = WPCF7_TagGenerator::get_instance();
 				$tag_generator->print_buttons();
 				?>
 				<textarea id="wpcf7-form" name="wpcf7-form" cols="100" rows="24" class="large-text code"><?php echo esc_textarea($post->prop('form')); ?></textarea>
@@ -628,7 +643,7 @@ function wpecf7vb_init() {
 				 *
 				  function selected( $selected, $current = true, $echo = true ) {
 				 */ ?>
-		<?php $selected_theme = get_option('wpecf7vb_selection_theme'); ?>
+				<?php $selected_theme	 = get_option('wpecf7vb_selection_theme'); ?>
 				<select id="themes-selection-editor"> 
 					<option value="" <?php selected('', $selected_theme, true) ?>><?php _e('Colors Scheme', 'visual-builder-for-contact-form-7'); ?></option>
 					<option value="monokai" <?php selected('monokai', $selected_theme, true) ?>>Monokai</option>
