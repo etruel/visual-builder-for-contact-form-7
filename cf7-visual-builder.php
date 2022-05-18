@@ -97,7 +97,7 @@ function wpecf7vb_init() {
 					$("#wpcf7-form").text(get_codemirror());
 					$wpcf7_taggen_insert.apply(this, arguments);
 
-		//			$('#wpecf7visualeditor').html('<?php _e('Save to change order', 'visual-builder-for-contact-form-7'); ?>').fadeIn();
+					//			$('#wpecf7visualeditor').html('<?php _e('Save to change order', 'visual-builder-for-contact-form-7'); ?>').fadeIn();
 				};
 				//alert("jaqjaja ");
 
@@ -259,32 +259,37 @@ function wpecf7vb_init() {
 
 				$(document).on("click", '.itemedit', function () {
 
-					var key = $(this).parent().siblings().find('[class^="wpcf7-"]').children();
+					$field = $(this).parent().siblings().find('[class^="wpcf7-"]').children();
+					$classes = $field.removeClass(['wpcf7-form-control', 'wpcf7-validates-as-required', 'wpcf7-validates-as-email']).attr('class');
+					//$node = $(this).parent().siblings().find('[class^="wpcf7-"]');
 
-					editable_name = key.removeClass(['wpcf7-form-control', 'wpcf7-validates-as-required', 'wpcf7-validates-as-email']).attr('class');
-					var $node = $(this).parent().siblings().find('[class^="wpcf7-"]');
-
-					var index = editable_name.indexOf('wpcf7-email')
-
+					var index = $classes.indexOf('wpcf7-email'); // exists then is email field 
 					if (index >= 0) {
-						editable_name = 'wpcf7-email';
+						$classes = 'wpcf7-email';
+						$field.removeClass('wpcf7-text');
+					} else {
+						// This strips custom classes from $classes so get the correct type
+						var classList = $classes.split(/\s+/);
+						$.each(classList, function (index, item) {
+							if (item.substr(0, 6) === 'wpcf7-') {
+								$classes = item;
+							}
+						});
 					}
 
-					$type = editable_name.replace('wpcf7-', '');
+					$type = $classes.replace('wpcf7-', '');
 
-					get_popup_trigger_link($type);
+					get_popup_trigger_link($type);  // sims click on $type button to show native popup
 
-					//replace_values_popup($node[1].attributes,editable_template);
-					replace_values_popup(getAttributes($node));
+					replace_values_popup(getAttributes($field.removeClass([$classes])));
 
 				});
 
 
 				function getAttributes($node) {
 					var attrs = {};
-					$.each($node[1].attributes, function (index, attribute) {
-						name = attribute.name;
-						name.replace('aria-', '');
+					$.each($node[0].attributes, function (index, attribute) {
+						name = attribute.name.replace('aria-', '').replace('placeholder', 'values');
 						attrs[name] = attribute.value;
 					});
 
@@ -311,7 +316,9 @@ function wpecf7vb_init() {
 						}
 					});
 
-					//popup.find(".insert-box input[type=text]").val(shortcode);
+					popup.each(function () {
+						wpcf7.taggen.update($(this));
+					});
 					popup.find(".insert-tag").val("Update Tag").addClass('cf7b-update-tag').removeClass('insert-tag');
 				}
 
@@ -321,51 +328,14 @@ function wpecf7vb_init() {
 
 					link = '';
 					switch (type) {
-						case 'text':
-							link = 'inlineId=tag-generator-panel-text';
-							break;
-						case 'email':
-							link = 'inlineId=tag-generator-panel-email';
-							break;
-						case 'url':
-							link = 'inlineId=tag-generator-panel-url';
-							break;
-						case 'tel':
-							link = 'inlineId=tag-generator-panel-tel';
-							break;
-						case 'number':
-							link = 'inlineId=tag-generator-panel-number';
-							break;
 						case 'range':
 							link = 'inlineId=tag-generator-panel-number';
-							break;
-						case 'date':
-							link = 'inlineId=tag-generator-panel-date';
-							break;
-						case 'textarea':
-							link = 'inlineId=tag-generator-panel-textarea';
 							break;
 						case 'select':
 							link = 'inlineId=tag-generator-panel-menu';
 							break;
-						case 'checkbox':
-							link = 'inlineId=tag-generator-panel-checkbox';
-							break;
-						case 'radio':
-							link = 'inlineId=tag-generator-panel-radio';
-							break;
-						case 'acceptance':
-							link = 'inlineId=tag-generator-panel-acceptance';
-							break;
-						case 'quiz':
-							link = 'inlineId=tag-generator-panel-quiz';
-							break;
-						case 'file':
-							link = 'inlineId=tag-generator-panel-file';
-							break;
-						case 'submit':
-							link = 'inlineId=tag-generator-panel-submit';
-							break;
+						default:
+							link = 'inlineId=tag-generator-panel-' + type;
 					}
 
 					var href = link;
@@ -448,7 +418,7 @@ function wpecf7vb_init() {
 				 //before pass by here
 				 var piezes_submit = $("textarea#wpcf7-form").text().split(new RegExp(separators.join('|'), 'g'));
 				 for (var i = 0; i < piezes_submit.length; i++) {
-				 
+						 
 				 if(piezes_submit[i].indexOf('[submit') >-1){
 				 //here to see if you have some HTML to be tag behind so not happened
 				 if(piezes_submit[i].indexOf('>')>-1){
