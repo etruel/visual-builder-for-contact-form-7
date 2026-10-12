@@ -57,7 +57,7 @@ Your forms keep being 100% Contact Form 7. Visual Builder only helps you write t
 * **Designers and agencies** build client forms in minutes and see the result right away.
 * **Developers** keep full control of the code, with a faster way to reorder and review long forms.
 
-Visual Builder follows the look of the WordPress admin, works with screen readers and the keyboard, adapts to small screens and is translation ready (Spanish included).
+Visual Builder follows the look of the WordPress admin, works with screen readers and the keyboard, adapts to small screens and comes translated into 12 languages.
 
 == Installation ==
 
@@ -116,7 +116,7 @@ That block only contains content that visitors do not see, such as hidden fields
 
 == Changelog ==
 
-= 3.0 Sep 24, 2026 =
+= 3.0 Oct 12, 2026 =
 The biggest update ever: a brand-new visual builder, built for Contact Form 7 6.x.
 
 * New: modern interface with Split, Code and Visual layouts.
@@ -134,8 +134,9 @@ The biggest update ever: a brand-new visual builder, built for Contact Form 7 6.
 * Improved: your custom HTML, comments, styles and scripts are always kept as you wrote them.
 * Improved: stronger security, with permission checks and sanitized data in every request.
 * Improved: accessibility for keyboard and screen reader users.
-* Improved: new screenshots, and updated translation catalog and Spanish translation.
-* Compatible with WordPress 7.1 and Contact Form 7 6.1.7. Requires WordPress 6.4, PHP 7.4 and Contact Form 7 6.0 or newer.
+* New: translated into 12 languages: Japanese, Spanish, German, French, Portuguese (Brazil), Italian, Dutch, Polish, Russian, Turkish, Vietnamese and Persian.
+* Improved: new screenshots.
+* Compatible with WordPress 7.1 and Contact Form 7 6.2.2. Requires WordPress 6.4, PHP 7.4 and Contact Form 7 6.0 or newer.
 
 = 2.5 Sep 16, 2021 =
 * Tested with WP 5.8.1 and CF7 5.4.2
